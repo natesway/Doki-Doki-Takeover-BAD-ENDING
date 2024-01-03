@@ -33,7 +33,7 @@ class ClientPrefs
 	public static var scoreZoom:Bool = true;
 	public static var noReset:Bool = false;
 	public static var healthBarAlpha:Float = 1;
-	public static var controllerMode:Bool = false;
+	public static var controllerMode:Bool = #if mobile true #else false #end;
 	public static var hitsoundVolume:Float = 0;
 	public static var autoPause:Bool = false;
 	public static var storycomplete:Bool = false;
