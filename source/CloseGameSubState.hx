@@ -5,6 +5,7 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
+import lime.system.System;
 
 class CloseGameSubState extends MusicBeatSubstate
 {
@@ -90,7 +91,7 @@ class CloseGameSubState extends MusicBeatSubstate
 	{
 		if (selection == 0)
 		{
-			Sys.exit(0);
+			System.exit(0);
 		}
 		else
 		{

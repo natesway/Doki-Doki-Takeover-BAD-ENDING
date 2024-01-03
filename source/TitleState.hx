@@ -81,7 +81,6 @@ class TitleState extends MusicBeatState
 	var easterEggKeyCombination:Array<FlxKey> = [FlxKey.B, FlxKey.B]; // bb stands for bbpanzu cuz he wanted this lmao
 	var lastKeysPressed:Array<FlxKey> = [];
 
-	var mustUpdate:Bool = false;
 	public static var loadedPrefs:Bool = false;
 
 	var titleJSON:TitleData;
@@ -164,7 +163,6 @@ class TitleState extends MusicBeatState
 		swagShader = new ColorSwap();
 		super.create();
 
-
 		if (!loadedPrefs)
 		{
 			FlxG.save.bind('BadEnding', CoolUtil.getSavePath());
@@ -174,7 +172,6 @@ class TitleState extends MusicBeatState
 			trace(FlxG.save.data.firststart + ' First Start');
 			trace(FlxG.save.data.storycomplete + ' Story Complete');
 		}
-		
 
 		Highscore.load();
 
@@ -449,14 +446,8 @@ class TitleState extends MusicBeatState
 
 				new FlxTimer().start(1, function(tmr:FlxTimer)
 				{
-					if (mustUpdate)
-					{
-						MusicBeatState.switchState(new OutdatedState());
-					}
-					else
-					{
-						MusicBeatState.switchState(new MainMenuState());
-					}
+					MusicBeatState.switchState(new MainMenuState());
+	
 					closedState = true;
 				});
 			}

@@ -18,7 +18,7 @@ import sys.FileSystem;
 import flixel.graphics.FlxGraphic;
 import openfl.display.BitmapData;
 #end
-import flash.media.Sound;
+import openfl.media.Sound;
 
 using StringTools;
 
