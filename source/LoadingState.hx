@@ -3,14 +3,14 @@ package;
 import flixel.FlxG;
 import flixel.FlxState;
 
-class LoadingState extends MusicBeatState
+class LoadingState
 {
 	inline static public function loadAndSwitchState(target:FlxState, stopMusic = false)
 	{
 		MusicBeatState.switchState(getNextState(target, stopMusic));
 	}
 
-	static function getNextState(target:FlxState, stopMusic = false):FlxState
+	private static function getNextState(target:FlxState, stopMusic = false):FlxState
 	{
 		final weekDir:String = StageData.forceNextDirectory;
 
