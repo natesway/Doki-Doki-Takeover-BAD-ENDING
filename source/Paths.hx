@@ -155,27 +155,27 @@ class Paths
 		return 'assets/$file';
 	}
 
-	inline static public function file(file:String, type:AssetType = TEXT, ?library:String)
+	public static inline function file(file:String, type:AssetType = TEXT, ?library:String)
 	{
 		return getPath(file, type, library);
 	}
 
-	inline static public function txt(key:String, ?library:String)
+	public static inline function txt(key:String, ?library:String)
 	{
 		return getPath('data/$key.txt', TEXT, library);
 	}
 
-	inline static public function xml(key:String, ?library:String)
+	public static inline function xml(key:String, ?library:String)
 	{
 		return getPath('data/$key.xml', TEXT, library);
 	}
 
-	inline static public function json(key:String, ?library:String)
+	public static inline function json(key:String, ?library:String)
 	{
 		return getPath('data/$key.json', TEXT, library);
 	}
 
-	inline static public function lua(key:String, ?library:String)
+	public static inline function lua(key:String, ?library:String)
 	{
 		return getPath('$key.lua', TEXT, library);
 	}
@@ -198,32 +198,32 @@ class Paths
 		return sound;
 	}
 
-	inline static public function soundRandom(key:String, min:Int, max:Int, ?library:String)
+	public static inline function soundRandom(key:String, min:Int, max:Int, ?library:String)
 	{
 		return sound(key + FlxG.random.int(min, max), library);
 	}
 
-	inline static public function music(key:String, ?library:String):Dynamic
+	public static inline function music(key:String, ?library:String):Dynamic
 	{
 		var file:Sound = returnSound('music', key, library);
 		return file;
 	}
 
-	inline static public function voices(song:String):Any
+	public static inline function voices(song:String):Any
 	{
 		var songKey:String = '${song.toLowerCase().replace(' ', '-')}/Voices';
 		var voices = returnSound('songs', songKey);
 		return voices;
 	}
 
-	inline static public function inst(song:String):Any
+	public static inline function inst(song:String):Any
 	{
 		var songKey:String = '${song.toLowerCase().replace(' ', '-')}/Inst';
 		var inst = returnSound('songs', songKey);
 		return inst;
 	}
 
-	inline static public function image(key:String, ?library:String):Dynamic
+	public static inline function image(key:String, ?library:String):Dynamic
 	{
 		// streamlined the assets process more
 		var returnAsset:FlxGraphic = returnGraphic(key, library);
@@ -259,7 +259,7 @@ class Paths
 		return Assets.getText(getPath(key, TEXT));
 	}
 
-	inline static public function font(key:String)
+	public static inline function font(key:String)
 	{
 		#if MODS_ALLOWED
 		var file:String = modsFont(key);
@@ -271,7 +271,7 @@ class Paths
 		return 'assets/fonts/$key';
 	}
 
-	inline static public function fileExists(key:String, type:AssetType, ?ignoreMods:Bool = false, ?library:String)
+	public static inline function fileExists(key:String, type:AssetType, ?ignoreMods:Bool = false, ?library:String)
 	{
 		#if MODS_ALLOWED
 		if (FileSystem.exists(mods(currentModDirectory + '/' + key)) || FileSystem.exists(mods(key)))
@@ -287,7 +287,7 @@ class Paths
 		return false;
 	}
 
-	inline static public function getSparrowAtlas(key:String, ?library:String):FlxAtlasFrames
+	public static inline function getSparrowAtlas(key:String, ?library:String):FlxAtlasFrames
 	{
 		var graphic:FlxGraphic = Paths.image(key, library);
 		var xmlExists:Bool = false;
@@ -302,7 +302,7 @@ class Paths
 		#end
 	}
 
-	inline static public function getPackerAtlas(key:String, ?library:String)
+	public static inline function getPackerAtlas(key:String, ?library:String)
 	{
 		#if MODS_ALLOWED
 		var imageLoaded:FlxGraphic = returnGraphic(key);
@@ -319,7 +319,7 @@ class Paths
 		#end
 	}
 
-	inline static public function formatToSongPath(path:String)
+	public static inline function formatToSongPath(path:String)
 	{
 		return path.toLowerCase().replace(' ', '-');
 	}
@@ -396,47 +396,47 @@ class Paths
 	}
 
 	#if MODS_ALLOWED
-	inline static public function mods(key:String = '')
+	public static inline function mods(key:String = '')
 	{
 		return 'mods/' + key;
 	}
 
-	inline static public function modsFont(key:String)
+	public static inline function modsFont(key:String)
 	{
 		return modFolders('fonts/' + key);
 	}
 
-	inline static public function modsJson(key:String)
+	public static inline function modsJson(key:String)
 	{
 		return modFolders('data/' + key + '.json');
 	}
 
-	inline static public function modsVideo(key:String)
+	public static inline function modsVideo(key:String)
 	{
 		return modFolders('videos/' + key + '.' + VIDEO_EXT);
 	}
 
-	inline static public function modsSounds(path:String, key:String)
+	public static inline function modsSounds(path:String, key:String)
 	{
 		return modFolders(path + '/' + key + '.' + SOUND_EXT);
 	}
 
-	inline static public function modsImages(key:String)
+	public static inline function modsImages(key:String)
 	{
 		return modFolders('images/' + key + '.png');
 	}
 
-	inline static public function modsXml(key:String)
+	public static inline function modsXml(key:String)
 	{
 		return modFolders('images/' + key + '.xml');
 	}
 
-	inline static public function modsTxt(key:String)
+	public static inline function modsTxt(key:String)
 	{
 		return modFolders('images/' + key + '.txt');
 	}
 
-	inline static public function shaderFragment(key:String, ?library:String)
+	public static inline function shaderFragment(key:String, ?library:String)
 	{
 		return getPath('shaders/$key.frag', TEXT, library);
 	}

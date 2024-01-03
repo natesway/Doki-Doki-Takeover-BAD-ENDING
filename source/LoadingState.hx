@@ -5,7 +5,7 @@ import flixel.FlxState;
 
 class LoadingState
 {
-	inline static public function loadAndSwitchState(target:FlxState, stopMusic = false)
+	public static inline function loadAndSwitchState(target:FlxState, stopMusic = false)
 	{
 		MusicBeatState.switchState(getNextState(target, stopMusic));
 	}
