@@ -48,11 +48,12 @@ class VisualsUISubState extends BaseOptionsMenu
 		addOption(option);
 
 		/*
-		var option:Option = new Option('Camera Zooms', "If unchecked, the camera won't zoom in on a beat hit.", 'camZooms', 'bool', true);
-		addOption(option);
-		*/
+			var option:Option = new Option('Camera Zooms', "If unchecked, the camera won't zoom in on a beat hit.", 'camZooms', 'bool', true);
+			addOption(option);
+		 */
 
-		var option:Option = new Option('Note Camera Amount', 'How much the camera moves from a note being hit\nduring certain segments.', 'noteCamera', 'percent', 1);
+		var option:Option = new Option('Note Camera Amount', 'How much the camera moves from a note being hit\nduring certain segments.', 'noteCamera',
+			'percent', 1);
 		option.scrollSpeed = 1.6;
 		option.minValue = 0.0;
 		option.maxValue = 1;

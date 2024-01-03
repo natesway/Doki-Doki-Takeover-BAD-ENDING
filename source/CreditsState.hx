@@ -62,18 +62,8 @@ class CreditsState extends MusicBeatState
 				'Team TBD Lead, Chromatic Creator',
 				'https://twitter.com/HighPoweredArt'
 			],
-			[
-				'M&M',
-				'mandm',
-				'Programmer',
-				'https://linktr.ee/ActualMandM'
-			],
-			[
-				'DuskieWhy',
-				'duskie',
-				'Shader Programmer',
-				'https://twitter.com/DuskieWhy'
-			],
+			['M&M', 'mandm', 'Programmer', 'https://linktr.ee/ActualMandM'],
+			['DuskieWhy', 'duskie', 'Shader Programmer', 'https://twitter.com/DuskieWhy'],
 			[
 				'Matt$', // animal showed this as MATTS
 				'matt',
@@ -86,48 +76,23 @@ class CreditsState extends MusicBeatState
 				'Musician - Menu Music and HOME',
 				'https://www.youtube.com/@JACKALRUIN'
 			],
-			[
-				'Flootena',
-				'floot',
-				'Charting - MARKOV',
-				'https://twitter.com/FlootenaDX'
-			],
+			['Flootena', 'floot', 'Charting - MARKOV', 'https://twitter.com/FlootenaDX'],
 			[
 				'Chompo',
 				'chompo',
 				'Charting - STAGNANT and HOME',
 				'https://twitter.com/chompoWRLD'
 			],
-			[
-				'crim',
-				'crim',
-				'Artist',
-				'https://twitter.com/ScrimbloCrimbo'
-			],
+			['crim', 'crim', 'Artist', 'https://twitter.com/ScrimbloCrimbo'],
 			[
 				'Raze',
 				'raze',
 				'Animator',
 				'https://www.youtube.com/channel/UCC550GafkWljtqAq0UDbYeQ'
 			],
-			[
-				'Grand Hammer 6',
-				'grand',
-				'Artist/Animator',
-				'https://twitter.com/GrandHammer6'
-			],
-			[
-				'Ito Saihara', 
-				'ito', 
-				'Background Artist', 
-				'https://twitter.com/ItoSaihara_'
-			],
-			[
-				'Carimelle', 
-				'carimelle', 
-				'Monika VA', 
-				'https://twitter.com/carimellevo'
-			],
+			['Grand Hammer 6', 'grand', 'Artist/Animator', 'https://twitter.com/GrandHammer6'],
+			['Ito Saihara', 'ito', 'Background Artist', 'https://twitter.com/ItoSaihara_'],
+			['Carimelle', 'carimelle', 'Monika VA', 'https://twitter.com/carimellevo'],
 			[''],
 			['Additional Credits'],
 			[

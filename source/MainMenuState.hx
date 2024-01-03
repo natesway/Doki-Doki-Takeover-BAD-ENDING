@@ -35,23 +35,12 @@ class MainMenuState extends MusicBeatState
 	private var camGame:FlxCamera;
 	private var camAchievement:FlxCamera;
 
-	var optionShit:Array<String> = [
-		'story mode',
-		'freeplay',
-		'credits',
-		'options',
-		'exit'
-	];
+	var optionShit:Array<String> = ['story mode', 'freeplay', 'credits', 'options', 'exit'];
 
-	var textShit:Array<String> = [
-		'Story Mode',
-		'Freeplay',
-		'Credits',
-		'Options',
-		'Exit Game'
-	];
+	var textShit:Array<String> = ['Story Mode', 'Freeplay', 'Credits', 'Options', 'Exit Game'];
 
 	public static var firstStart:Bool = true;
+
 	var focused:Bool = true;
 
 	var changeTxt:FlxText;
@@ -76,7 +65,7 @@ class MainMenuState extends MusicBeatState
 		}
 		else
 		{
-			//I'm making sure it SAVES. Im tired of this dumb game not saving settings
+			// I'm making sure it SAVES. Im tired of this dumb game not saving settings
 			ClientPrefs.storycomplete = true;
 			ClientPrefs.firststart = false;
 			ClientPrefs.saveSettings();
@@ -105,7 +94,7 @@ class MainMenuState extends MusicBeatState
 
 		if (random == 64)
 		{
-			//Can't let my child go to waste :)
+			// Can't let my child go to waste :)
 			var fumo:FlxSprite = new FlxSprite(-100, -250).loadGraphic(Paths.image('Fumo'));
 			fumo.screenCenter();
 			fumo.x += 100;
@@ -241,7 +230,6 @@ class MainMenuState extends MusicBeatState
 			}
 			#end
 
-
 			if (controls.UI_UP_P)
 			{
 				FlxG.sound.play(Paths.sound('scrollMenu'));
@@ -253,7 +241,7 @@ class MainMenuState extends MusicBeatState
 				FlxG.sound.play(Paths.sound('scrollMenu'));
 				changeItem(1);
 			}
-			
+
 			if (ctrl && curSelected == 0)
 			{
 				openSubState(new GameplayChangersSubstate());
@@ -367,7 +355,7 @@ class MainMenuState extends MusicBeatState
 			FlxTween.cancelTweensOf(changeTxt);
 			changeTxt.visible = (curSelected == 0);
 			changeTxt.alpha = 0;
-	
+
 			if (changeTxt.visible)
 				FlxTween.tween(changeTxt, {alpha: 1}, 0.75, {ease: FlxEase.circOut, startDelay: 0.5});
 		}

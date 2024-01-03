@@ -189,16 +189,16 @@ class PauseSubState extends MusicBeatSubstate
 			var upP = controls.UI_UP_P;
 			var downP = controls.UI_DOWN_P;
 			var accepted = controls.ACCEPT;
-	
+
 			if (upP)
 				changeSelection(-1);
 			if (downP)
 				changeSelection(1);
-	
+
 			if (accepted)
 			{
 				var daSelected:String = menuItems[curSelected];
-	
+
 				if (difficultyChoices.contains(daSelected))
 				{
 					var name:String = PlayState.SONG.song.toLowerCase();
@@ -212,7 +212,7 @@ class PauseSubState extends MusicBeatSubstate
 					PlayState.chartingMode = false;
 					return;
 				}
-	
+
 				switch (daSelected.toLowerCase())
 				{
 					case "resume":
@@ -249,7 +249,7 @@ class PauseSubState extends MusicBeatSubstate
 						FlxG.sound.playMusic(Paths.music('freakyMenu'));
 						PlayState.changedDifficulty = false;
 						PlayState.chartingMode = false;
-	
+
 					case 'back':
 						menuItems = menuItemsOG;
 						regenMenu();

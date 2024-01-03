@@ -16,8 +16,8 @@ class GameOverSubstate extends MusicBeatSubstate
 
 	var camFollow:FlxPoint;
 	var camFollowPos:FlxObject;
-	//var updateCamera:Bool = false;
 
+	// var updateCamera:Bool = false;
 	var stageSuffix:String = "";
 
 	public static var characterName:String = 'bf';
@@ -25,6 +25,7 @@ class GameOverSubstate extends MusicBeatSubstate
 	public static var loopSoundName:String = 'gameOver';
 	public static var endSoundName:String = 'gameOverEnd';
 	public static var markovGameover:Bool = false;
+
 	var camZoom:Float = 1;
 
 	public static var instance:GameOverSubstate;
@@ -53,12 +54,12 @@ class GameOverSubstate extends MusicBeatSubstate
 		PlayState.instance.setOnLuas('inGameOver', true);
 
 		Conductor.songPosition = 0;
-		if (markovGameover) 
+		if (markovGameover)
 		{
 			deathSoundName = 'YuriWatchesYouDie';
 			characterName = 'gameover-markov';
 			camZoom = 0.9;
-		}	
+		}
 
 		boyfriend = new Boyfriend(x, y, characterName);
 		boyfriend.x += boyfriend.positionArray[0];
@@ -77,7 +78,7 @@ class GameOverSubstate extends MusicBeatSubstate
 		boyfriend.playAnim('firstDeath');
 
 		camFollowPos = new FlxObject(0, 0, 1, 1);
-		//camFollowPos.setPosition(FlxG.camera.scroll.x + (FlxG.camera.width / 2), FlxG.camera.scroll.y + (FlxG.camera.height / 2));
+		// camFollowPos.setPosition(FlxG.camera.scroll.x + (FlxG.camera.width / 2), FlxG.camera.scroll.y + (FlxG.camera.height / 2));
 		camFollowPos.setPosition(camFollow.x, camFollow.y);
 		add(camFollowPos);
 
@@ -85,18 +86,18 @@ class GameOverSubstate extends MusicBeatSubstate
 		FlxG.camera.follow(camFollowPos, LOCKON, 1);
 	}
 
-	//var isFollowingAlready:Bool = false;
+	// var isFollowingAlready:Bool = false;
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
 
 		PlayState.instance.callOnLuas('onUpdate', [elapsed]);
 
-		//if (updateCamera)
-		//{
+		// if (updateCamera)
+		// {
 		//	var lerpVal:Float = CoolUtil.boundTo(elapsed * 0.6, 0, 1);
 		//	camFollowPos.setPosition(FlxMath.lerp(camFollowPos.x, camFollow.x, lerpVal), FlxMath.lerp(camFollowPos.y, camFollow.y, lerpVal));
-		//}
+		// }
 
 		if (controls.ACCEPT)
 		{
@@ -120,12 +121,12 @@ class GameOverSubstate extends MusicBeatSubstate
 
 		if (boyfriend.animation.curAnim.name == 'firstDeath')
 		{
-			//if (boyfriend.animation.curAnim.curFrame >= 12 && !isFollowingAlready)
-			//{
+			// if (boyfriend.animation.curAnim.curFrame >= 12 && !isFollowingAlready)
+			// {
 			//	FlxG.camera.follow(camFollowPos, LOCKON, 1);
 			//	updateCamera = true;
 			//	isFollowingAlready = true;
-			//}
+			// }
 
 			if (boyfriend.animation.curAnim.finished)
 			{

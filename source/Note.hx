@@ -125,7 +125,8 @@ class Note extends FlxSprite
 					colorSwap.brightness = 0;
 					missHealth = 420;
 					hitCausesMiss = true;
-					if (value == 'Note of Markov') noAnimation = true;
+					if (value == 'Note of Markov')
+						noAnimation = true;
 				case 'No Animation':
 					noAnimation = true;
 				case 'GF Sing':

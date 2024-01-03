@@ -16,6 +16,7 @@ class FlashingState extends MusicBeatState
 {
 	var bg:FlxSprite;
 	var selected:Bool = false;
+
 	override function create()
 	{
 		super.create();

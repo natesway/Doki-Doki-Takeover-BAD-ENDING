@@ -3,7 +3,6 @@ package;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxObject;
-
 import flixel.animation.FlxBaseAnimation;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.tweens.FlxTween;
@@ -19,7 +18,8 @@ import haxe.format.JsonParser;
 
 using StringTools;
 
-typedef CharacterFile = {
+typedef CharacterFile =
+{
 	var animations:Array<AnimArray>;
 	var image:String;
 	var scale:Float;
@@ -36,7 +36,8 @@ typedef CharacterFile = {
 	var death_Sound:String;
 }
 
-typedef AnimArray = {
+typedef AnimArray =
+{
 	var anim:String;
 	var name:String;
 	var fps:Int;
@@ -60,9 +61,9 @@ class Character extends FlxSprite
 	public var specialAnim:Bool = false;
 	public var animationNotes:Array<Dynamic> = [];
 	public var stunned:Bool = false;
-	public var singDuration:Float = 4; //Multiplier of how long a character holds the sing pose
+	public var singDuration:Float = 4; // Multiplier of how long a character holds the sing pose
 	public var idleSuffix:String = '';
-	public var danceIdle:Bool = false; //Character use "danceLeft" and "danceRight" instead of "idle"
+	public var danceIdle:Bool = false; // Character use "danceLeft" and "danceRight" instead of "idle"
 	public var gameoverchara:String = 'bf';
 	public var deathsound:String = 'fnf_loss_sfx';
 	public var healthIcon:String = 'face';
@@ -73,18 +74,21 @@ class Character extends FlxSprite
 	public var flipAnim:Bool = false;
 	public var hasMissAnimations:Bool = false;
 
-	//Used on Character Editor
+	// Used on Character Editor
 	public var imageFile:String = '';
 	public var jsonScale:Float = 1;
 	public var noAntialiasing:Bool = false;
 	public var originalFlipX:Bool = false;
 	public var initFacing:Int = FlxObject.RIGHT;
+
 	var initWidth:Float;
 	var facingleft:Bool = false;
 	var animdebug:Bool = false;
+
 	public var healthColorArray:Array<Int> = [255, 0, 0];
 
-	public static var DEFAULT_CHARACTER:String = 'bf'; //In case a character is missing, it will use BF on its place
+	public static var DEFAULT_CHARACTER:String = 'bf'; // In case a character is missing, it will use BF on its place
+
 	public function new(x:Float, y:Float, ?character:String = 'bf', ?flipChara:Bool = false, ?isNPC:Bool = false, ?isAnimDebug:Bool = false)
 	{
 		super(x, y);
@@ -98,19 +102,21 @@ class Character extends FlxSprite
 		this.flipChara = flipChara;
 		this.isNPC = isNPC;
 		animdebug = isAnimDebug;
-		if (!animdebug)	flipAnim = flipChara;
+		if (!animdebug)
+			flipAnim = flipChara;
 		antialiasing = ClientPrefs.globalAntialiasing;
 
 		var library:String = null;
 		switch (curCharacter)
 		{
-			//case 'your character name in case you want to hardcode him instead':
+			// case 'your character name in case you want to hardcode him instead':
 
 			default:
 				var characterPath:String = 'characters/' + curCharacter + '.json';
 				#if MODS_ALLOWED
 				var path:String = Paths.modFolders(characterPath);
-				if (!FileSystem.exists(path)) {
+				if (!FileSystem.exists(path))
+				{
 					path = Paths.getPreloadPath(characterPath);
 				}
 
@@ -120,7 +126,8 @@ class Character extends FlxSprite
 				if (!Assets.exists(path))
 				#end
 				{
-					path = Paths.getPreloadPath('characters/' + DEFAULT_CHARACTER + '.json'); //If a character couldn't be found, change him to BF just to prevent a crash
+					path = Paths.getPreloadPath('characters/' + DEFAULT_CHARACTER +
+						'.json'); // If a character couldn't be found, change him to BF just to prevent a crash
 				}
 
 				#if MODS_ALLOWED
@@ -132,12 +139,12 @@ class Character extends FlxSprite
 				var json:CharacterFile = cast Json.parse(rawJson);
 				#if MODS_ALLOWED
 				var txtToFind:String = Paths.getPath('images/' + json.image + '.txt', TEXT);
-				if(FileSystem.exists(txtToFind) || Assets.exists(txtToFind))
+				if (FileSystem.exists(txtToFind) || Assets.exists(txtToFind))
 				#else
-				if(Assets.exists(Paths.getPath('images/' + json.image + '.txt', TEXT)))
+				if (Assets.exists(Paths.getPath('images/' + json.image + '.txt', TEXT)))
 				#end
 				{
-				//bozo forgot about the packer shits : P
+					// bozo forgot about the packer shits : P
 					frames = Paths.getPackerAtlas(json.image);
 				}
 				else
@@ -145,22 +152,23 @@ class Character extends FlxSprite
 					frames = Paths.getSparrowAtlas(json.image);
 				}
 				imageFile = json.image;
-				
+
 				if (!animdebug)
 				{
 					if (!!json.flip_x)
-						{
-							initFacing = FlxObject.LEFT;
-							facingleft = true;
-						}
-						else
-						{
-							initFacing = FlxObject.RIGHT;
-							facingleft = false;
-						}
+					{
+						initFacing = FlxObject.LEFT;
+						facingleft = true;
+					}
+					else
+					{
+						initFacing = FlxObject.RIGHT;
+						facingleft = false;
+					}
 				}
 
-				if(json.scale != 1) {
+				if (json.scale != 1)
+				{
 					jsonScale = json.scale;
 					setGraphicSize(Std.int(width * jsonScale));
 					updateHitbox();
@@ -175,107 +183,124 @@ class Character extends FlxSprite
 				healthIcon = json.healthicon;
 				singDuration = json.sing_duration;
 
-				if (animdebug) flipX = !!json.flip_x;
+				if (animdebug)
+					flipX = !!json.flip_x;
 
-				if(json.no_antialiasing) {
+				if (json.no_antialiasing)
+				{
 					antialiasing = false;
 					noAntialiasing = true;
 				}
 
-				if(json.healthbar_colors != null && json.healthbar_colors.length > 2)
+				if (json.healthbar_colors != null && json.healthbar_colors.length > 2)
 					healthColorArray = json.healthbar_colors;
 
 				antialiasing = !noAntialiasing;
-				if(!ClientPrefs.globalAntialiasing) antialiasing = false;
+				if (!ClientPrefs.globalAntialiasing)
+					antialiasing = false;
 
 				animationsArray = json.animations;
-				if(animationsArray != null && animationsArray.length > 0) {
-					for (anim in animationsArray) {
+				if (animationsArray != null && animationsArray.length > 0)
+				{
+					for (anim in animationsArray)
+					{
 						var animAnim:String = '' + anim.anim;
 						var animName:String = '' + anim.name;
 						var animFps:Int = anim.fps;
-						var animLoop:Bool = !!anim.loop; //Bruh
+						var animLoop:Bool = !!anim.loop; // Bruh
 						var animIndices:Array<Int> = anim.indices;
-						if(animIndices != null && animIndices.length > 0) {
+						if (animIndices != null && animIndices.length > 0)
+						{
 							animation.addByIndices(animAnim, animName, animIndices, "", animFps, animLoop);
-						} else {
+						}
+						else
+						{
 							animation.addByPrefix(animAnim, animName, animFps, animLoop);
 						}
 
-						if(anim.offsets != null && anim.offsets.length > 1) {
+						if (anim.offsets != null && anim.offsets.length > 1)
+						{
 							addOffset(anim.anim, anim.offsets[0], anim.offsets[1]);
 						}
 					}
-				} else {
+				}
+				else
+				{
 					quickAnimAdd('idle', 'BF idle dance');
 				}
-				//trace('Loaded file to character ' + curCharacter);
+				// trace('Loaded file to character ' + curCharacter);
 		}
 
-		if (!animdebug) setFacingFlip((initFacing == FlxObject.LEFT ? FlxObject.RIGHT : FlxObject.LEFT), true, false);
-		
-		if (animdebug) originalFlipX = flipX;
-			
-		if(animOffsets.exists('singLEFTmiss') || animOffsets.exists('singDOWNmiss') || animOffsets.exists('singUPmiss') || animOffsets.exists('singRIGHTmiss')) hasMissAnimations = true;
+		if (!animdebug)
+			setFacingFlip((initFacing == FlxObject.LEFT ? FlxObject.RIGHT : FlxObject.LEFT), true, false);
+
+		if (animdebug)
+			originalFlipX = flipX;
+
+		if (animOffsets.exists('singLEFTmiss') || animOffsets.exists('singDOWNmiss') || animOffsets.exists('singUPmiss') || animOffsets.exists('singRIGHTmiss'))
+			hasMissAnimations = true;
 		recalculateDanceIdle();
 		dance();
 
-		if (!animdebug) facing = (flipAnim ? FlxObject.LEFT : FlxObject.RIGHT);
+		if (!animdebug)
+			facing = (flipAnim ? FlxObject.LEFT : FlxObject.RIGHT);
 
-		if (animdebug && flipChara)	flipX = !flipX;
+		if (animdebug && flipChara)
+			flipX = !flipX;
 
 		if (!animdebug && facing != initFacing)
 		{
 			if (animation.getByName('singRIGHT') != null)
-				{
-					var oldRight = animation.getByName('singRIGHT').frames;
-					var oldOffset = animOffsets['singRIGHT'];
-					animation.getByName('singRIGHT').frames = animation.getByName('singLEFT').frames;
-					animOffsets['singRIGHT'] = animOffsets['singLEFT'];
-					animation.getByName('singLEFT').frames = oldRight;
-					animOffsets['singLEFT'] = oldOffset;
-				}
-	
-				// IF THEY HAVE MISS ANIMATIONS??
-				if (animation.getByName('singRIGHTmiss') != null)
-				{
-					var oldMiss = animation.getByName('singRIGHTmiss').frames;
-					var oldOffset = animOffsets['singRIGHTmiss'];
-					animation.getByName('singRIGHTmiss').frames = animation.getByName('singLEFTmiss').frames;
-					animOffsets['singRIGHTmiss'] = animOffsets['singLEFTmiss'];
-					animation.getByName('singLEFTmiss').frames = oldMiss;
-					animOffsets['singLEFTmiss'] = oldOffset;
-				}
-	
-				if (animation.getByName('singRIGHT-alt') != null)
-				{
-					var oldRight = animation.getByName('singRIGHT-alt').frames;
-					var oldOffset = animOffsets['singRIGHT-alt'];
-					animation.getByName('singRIGHT-alt').frames = animation.getByName('singLEFT-alt').frames;
-					animOffsets['singRIGHT-alt'] = animOffsets['singLEFT-alt'];
-					animation.getByName('singLEFT-alt').frames = oldRight;
-					animOffsets['singLEFT-alt'] = oldOffset;
-				}
+			{
+				var oldRight = animation.getByName('singRIGHT').frames;
+				var oldOffset = animOffsets['singRIGHT'];
+				animation.getByName('singRIGHT').frames = animation.getByName('singLEFT').frames;
+				animOffsets['singRIGHT'] = animOffsets['singLEFT'];
+				animation.getByName('singLEFT').frames = oldRight;
+				animOffsets['singLEFT'] = oldOffset;
+			}
+
+			// IF THEY HAVE MISS ANIMATIONS??
+			if (animation.getByName('singRIGHTmiss') != null)
+			{
+				var oldMiss = animation.getByName('singRIGHTmiss').frames;
+				var oldOffset = animOffsets['singRIGHTmiss'];
+				animation.getByName('singRIGHTmiss').frames = animation.getByName('singLEFTmiss').frames;
+				animOffsets['singRIGHTmiss'] = animOffsets['singLEFTmiss'];
+				animation.getByName('singLEFTmiss').frames = oldMiss;
+				animOffsets['singLEFTmiss'] = oldOffset;
+			}
+
+			if (animation.getByName('singRIGHT-alt') != null)
+			{
+				var oldRight = animation.getByName('singRIGHT-alt').frames;
+				var oldOffset = animOffsets['singRIGHT-alt'];
+				animation.getByName('singRIGHT-alt').frames = animation.getByName('singLEFT-alt').frames;
+				animOffsets['singRIGHT-alt'] = animOffsets['singLEFT-alt'];
+				animation.getByName('singLEFT-alt').frames = oldRight;
+				animOffsets['singLEFT-alt'] = oldOffset;
+			}
 		}
 	}
 
 	override function update(elapsed:Float)
 	{
-		if(!debugMode && animation.curAnim != null)
+		if (!debugMode && animation.curAnim != null)
 		{
-			if(heyTimer > 0)
+			if (heyTimer > 0)
 			{
 				heyTimer -= elapsed;
-				if(heyTimer <= 0)
+				if (heyTimer <= 0)
 				{
-					if(specialAnim && animation.curAnim.name == 'hey' || animation.curAnim.name == 'cheer')
+					if (specialAnim && animation.curAnim.name == 'hey' || animation.curAnim.name == 'cheer')
 					{
 						specialAnim = false;
 						dance();
 					}
 					heyTimer = 0;
 				}
-			} else if(specialAnim && animation.curAnim.finished)
+			}
+			else if (specialAnim && animation.curAnim.finished)
 			{
 				specialAnim = false;
 				dance();
@@ -295,7 +320,7 @@ class Character extends FlxSprite
 				}
 			}
 
-			if(animation.curAnim.finished && animation.getByName(animation.curAnim.name + '-loop') != null)
+			if (animation.curAnim.finished && animation.getByName(animation.curAnim.name + '-loop') != null)
 			{
 				playAnim(animation.curAnim.name + '-loop');
 			}
@@ -335,11 +360,14 @@ class Character extends FlxSprite
 		var daOffset = animOffsets.get(AnimName);
 		if (animOffsets.exists(AnimName))
 		{
-			if (!animdebug) offset.set((facing != initFacing ? -1 : 1) * daOffset[0] + (facing != initFacing ? frameWidth - initWidth : 0), daOffset[1]);	
-			
-			if (animdebug) offset.set(daOffset[0], daOffset[1]);
-			
-			if (!animdebug && facing != initFacing)	offset.x -= 400;
+			if (!animdebug)
+				offset.set((facing != initFacing ? -1 : 1) * daOffset[0] + (facing != initFacing ? frameWidth - initWidth : 0), daOffset[1]);
+
+			if (animdebug)
+				offset.set(daOffset[0], daOffset[1]);
+
+			if (!animdebug && facing != initFacing)
+				offset.x -= 400;
 		}
 		else
 			offset.set(0, 0);
@@ -362,7 +390,8 @@ class Character extends FlxSprite
 		}
 	}
 
-	public function recalculateDanceIdle() {
+	public function recalculateDanceIdle()
+	{
 		danceIdle = (animation.getByName('danceLeft' + idleSuffix) != null && animation.getByName('danceRight' + idleSuffix) != null);
 	}
 

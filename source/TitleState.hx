@@ -272,7 +272,6 @@ class TitleState extends MusicBeatState
 		gradient.screenCenter();
 		gradient.setGraphicSize(Std.int(gradient.width * 1.4));
 		add(gradient);
-		
 
 		logoBl = new FlxSprite(titleJSON.titlex, titleJSON.titley);
 
@@ -447,7 +446,7 @@ class TitleState extends MusicBeatState
 				new FlxTimer().start(1, function(tmr:FlxTimer)
 				{
 					MusicBeatState.switchState(new MainMenuState());
-	
+
 					closedState = true;
 				});
 			}

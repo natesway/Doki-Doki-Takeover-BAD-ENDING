@@ -60,18 +60,9 @@ using StringTools;
 class ChartingState extends MusicBeatState
 {
 	public static var noteTypeList:Array<String> = // Used for backwards compatibility with 0.1 - 0.3.2 charts, though, you should add your hardcoded custom note types here too.
-	[
-		'',
-		'Alt Animation',
-		'Hey!',
-		'Hurt Note',
-		'GF Sing',
-		'No Animation',
-		'Note of Markov',
-		'Note of Markov (Play anim)',
-		'Sayo Sing', 
-		'Yuri Sing'
-	];
+		[
+			'', 'Alt Animation', 'Hey!', 'Hurt Note', 'GF Sing', 'No Animation', 'Note of Markov', 'Note of Markov (Play anim)', 'Sayo Sing', 'Yuri Sing'
+		];
 
 	private var noteTypeIntMap:Map<Int, String> = new Map<Int, String>();
 	private var noteTypeMap:Map<String, Null<Int>> = new Map<String, Null<Int>>();
@@ -134,10 +125,7 @@ class ChartingState extends MusicBeatState
 			'Change Time Graphic',
 			"Value 1: The prefix and suffix for the graphic\nValue 2: The offset of the graphic\n(both separated by commas)"
 		],
-		[
-			'Change HUD Font',
-			"Value 1: Font type"
-		],
+		['Change HUD Font', "Value 1: Font type"],
 		[
 			'Change Stagnant Stage',
 			"Value 1: The version of the stage to switch to.\nValue2: Fade in duration for sketch effect\n\nValid for Value 1: evil, poem, closet\nInvalid values go to regular clubroom."
@@ -162,10 +150,7 @@ class ChartingState extends MusicBeatState
 			'Change Camera Zoom',
 			"Value 1: Zoom for the camera to change to\nValue 2: true/false to suddenly zoom, or\nnumerical value for duration"
 		],
-		[
-			'Force Dance',
-			"Value 1: Character to force dance on"
-		],
+		['Force Dance', "Value 1: Character to force dance on"],
 		[
 			'Poem Transition',
 			"Value 1: True or False on visiblity\nNOTE: True plays the animation"
@@ -194,10 +179,7 @@ class ChartingState extends MusicBeatState
 			Value 1 is how fast it fades out.
 			Only use in DDTOBE songs"
 		],
-		[
-			'Eye Popup',
-			"Value 1: x\nValue 2: y"
-		],
+		['Eye Popup', "Value 1: x\nValue 2: y"],
 		[
 			'Screen in Darkness',
 			"Value 1: How transparent is the black overlay\nValue 2: How slow/fast it goes"
@@ -230,7 +212,7 @@ class ChartingState extends MusicBeatState
 			'Show death screen',
 			"Self explanitory
 			Value 1: True or false you know what it does.
-			Value 2: Speed of fade in"	
+			Value 2: Speed of fade in"
 		],
 		[
 			'UI visibilty',
@@ -268,26 +250,14 @@ class ChartingState extends MusicBeatState
 			"Value 1: file name
 			Value 2: volume"
 		],
-		[
-			'Markov note spawns blood',
-			"Value 1: true/false"
-		],
+		['Markov note spawns blood', "Value 1: true/false"],
 		[
 			'Spawn Red Eyes',
 			"Value 1: anything here spawns them in, typing 'fadeout' will make them go away \n Value 2: speed of fade out"
 		],
-		[
-			'Stab Border',
-			"Value 1: does it regardless of what you put here"
-		],
-		[
-			'Stagnant Glitch',
-			'Yes'
-		],
-		[
-			'Tween in the holy light',
-			'Value 1: Alpha, Value 2: Speed'
-		]
+		['Stab Border', "Value 1: does it regardless of what you put here"],
+		['Stagnant Glitch', 'Yes'],
+		['Tween in the holy light', 'Value 1: Alpha, Value 2: Speed']
 	];
 
 	var _file:FileReference;
@@ -1288,8 +1258,7 @@ class ChartingState extends MusicBeatState
 		setAllLabelsOffset(moveRightButton, -30, 0);
 		tab_group_event.add(moveRightButton);
 
-		selectedEventText = new FlxText(addButton.x - 100, addButton.y + addButton.height + 6, (moveRightButton.x - addButton.x) + 186,
-			'Selected Event: None');
+		selectedEventText = new FlxText(addButton.x - 100, addButton.y + addButton.height + 6, (moveRightButton.x - addButton.x) + 186, 'Selected Event: None');
 		selectedEventText.alignment = CENTER;
 		tab_group_event.add(selectedEventText);
 
@@ -2694,7 +2663,7 @@ class ChartingState extends MusicBeatState
 				if (note.y < -150)
 					note.y = -150;
 
-				var text:String = 'Event: ' + note.eventName + ' (' + Math.floor(note.strumTime) + ' ms)' + '\nValue 1: ' + note.eventVal1 + '\nValue 2: ' 
+				var text:String = 'Event: ' + note.eventName + ' (' + Math.floor(note.strumTime) + ' ms)' + '\nValue 1: ' + note.eventVal1 + '\nValue 2: '
 					+ note.eventVal2 + '\nValue 3: ' + note.eventVal3;
 				if (note.eventLength > 1)
 					text = note.eventLength + ' Events:\n' + note.eventName;
@@ -2739,8 +2708,8 @@ class ChartingState extends MusicBeatState
 			}
 		}
 
-		//if (curSection != lastSection)
-			//noteStyleSectionText.text = (_song.notes[curSection].noteStyle == null ? '' : _song.notes[curSection].noteStyle);
+		// if (curSection != lastSection)
+		// noteStyleSectionText.text = (_song.notes[curSection].noteStyle == null ? '' : _song.notes[curSection].noteStyle);
 	}
 
 	function setupNoteData(i:Array<Dynamic>, isNextSection:Bool):Note

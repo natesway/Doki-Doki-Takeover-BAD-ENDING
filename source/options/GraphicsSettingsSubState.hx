@@ -34,11 +34,7 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 		title = 'Graphics';
 		rpcTitle = 'Graphics Settings Menu'; // for Discord Rich Presence
 
-		var option:Option = new Option('Fullscreen',
-			'If checked, runs the game in fullscreen.',
-			'fullscreen',
-			'bool',
-			false);
+		var option:Option = new Option('Fullscreen', 'If checked, runs the game in fullscreen.', 'fullscreen', 'bool', false);
 		option.onChange = onChangeFullscreen;
 		addOption(option);
 
@@ -73,10 +69,7 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 		addOption(option);
 
 		var option:Option = new Option('GPU Textures*',
-			'If checked, renders textures on the GPU instead,\ndecreasing memory usage.\n\n*Experimental, may cause issues.',
-			'gpuTextures',
-			'bool',
-			true);
+			'If checked, renders textures on the GPU instead,\ndecreasing memory usage.\n\n*Experimental, may cause issues.', 'gpuTextures', 'bool', true);
 		addOption(option);
 
 		super();
