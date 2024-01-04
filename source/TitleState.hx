@@ -110,24 +110,7 @@ class TitleState extends MusicBeatState
 		}
 		#end
 
-		#if (desktop && MODS_ALLOWED)
-		var path = "mods/" + Paths.currentModDirectory + "/images/gfDanceTitle.json";
-		// trace(path, FileSystem.exists(path));
-		if (!FileSystem.exists(path))
-		{
-			path = "mods/images/gfDanceTitle.json";
-		}
-		// trace(path, FileSystem.exists(path));
-		if (!FileSystem.exists(path))
-		{
-			path = "assets/images/gfDanceTitle.json";
-		}
-		// trace(path, FileSystem.exists(path));
-		titleJSON = Json.parse(File.getContent(path));
-		#else
-		var path = Paths.getPreloadPath("images/gfDanceTitle.json");
-		titleJSON = Json.parse(Assets.getText(path));
-		#end
+		titleJSON = Json.parse(Paths.getTextFromFile("images/gfDanceTitle.json"));
 
 		FlxG.game.focusLostFramerate = 60;
 		FlxG.sound.muteKeys = muteKeys;
@@ -206,6 +189,7 @@ class TitleState extends MusicBeatState
 		}
 
 		Conductor.bpm = titleJSON.bpm;
+
 		persistentUpdate = true;
 
 		backdrop = new FlxBackdrop(Paths.image('scrolling_BG'));
@@ -230,80 +214,26 @@ class TitleState extends MusicBeatState
 		gradient.setGraphicSize(Std.int(gradient.width * 1.4));
 		add(gradient);
 
+		swagShader = new ColorSwap();
+
+		gfDance = new FlxSprite(titleJSON.gfx, titleJSON.gfy);
+		gfDance.frames = Paths.getSparrowAtlas('gfDanceTitle');
+		gfDance.animation.addByIndices('danceLeft', 'gfDance', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
+		gfDance.animation.addByIndices('danceRight', 'gfDance', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
+		gfDance.antialiasing = ClientPrefs.globalAntialiasing;
+		gfDance.shader = swagShader.shader;
+		add(gfDance);
+
 		logoBl = new FlxSprite(titleJSON.titlex, titleJSON.titley);
-
-		#if (desktop && MODS_ALLOWED)
-		var path = "mods/" + Paths.currentModDirectory + "/images/logoBumpin.png";
-		// trace(path, FileSystem.exists(path));
-		if (!FileSystem.exists(path))
-		{
-			path = "mods/images/logoBumpin.png";
-		}
-		// trace(path, FileSystem.exists(path));
-		if (!FileSystem.exists(path))
-		{
-			path = "assets/images/logoBumpin.png";
-		}
-		// trace(path, FileSystem.exists(path));
-		logoBl.frames = FlxAtlasFrames.fromSparrow(BitmapData.fromFile(path), File.getContent(StringTools.replace(path, ".png", ".xml")));
-		logoBl.setGraphicSize(Std.int(logoBl.width * titleJSON.titlescale));
-		#else
 		logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
-		#end
-
 		logoBl.antialiasing = ClientPrefs.globalAntialiasing;
 		logoBl.animation.addByPrefix('bump', 'logo bumpin', 24, true);
 		logoBl.animation.play('bump');
 		logoBl.updateHitbox();
-
-		swagShader = new ColorSwap();
-		gfDance = new FlxSprite(titleJSON.gfx, titleJSON.gfy);
-
-		#if (desktop && MODS_ALLOWED)
-		var path = "mods/" + Paths.currentModDirectory + "/images/gfDanceTitle.png";
-		// trace(path, FileSystem.exists(path));
-		if (!FileSystem.exists(path))
-		{
-			path = "mods/images/gfDanceTitle.png";
-			// trace(path, FileSystem.exists(path));
-		}
-		if (!FileSystem.exists(path))
-		{
-			path = "assets/images/gfDanceTitle.png";
-			// trace(path, FileSystem.exists(path));
-		}
-		gfDance.frames = FlxAtlasFrames.fromSparrow(BitmapData.fromFile(path), File.getContent(StringTools.replace(path, ".png", ".xml")));
-		gfDance.setGraphicSize(Std.int(gfDance.width * titleJSON.gfscale));
-		#else
-		gfDance.frames = Paths.getSparrowAtlas('gfDanceTitle');
-		#end
-		gfDance.animation.addByIndices('danceLeft', 'gfDance', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
-		gfDance.animation.addByIndices('danceRight', 'gfDance', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
-
-		gfDance.antialiasing = ClientPrefs.globalAntialiasing;
-		add(gfDance);
-		gfDance.shader = swagShader.shader;
 		add(logoBl);
 
 		titleText = new FlxSprite(titleJSON.startx, titleJSON.starty);
-		#if (desktop && MODS_ALLOWED)
-		var path = "mods/" + Paths.currentModDirectory + "/images/titleEnter.png";
-		// trace(path, FileSystem.exists(path));
-		if (!FileSystem.exists(path))
-		{
-			path = "mods/images/titleEnter.png";
-		}
-		// trace(path, FileSystem.exists(path));
-		if (!FileSystem.exists(path))
-		{
-			path = "assets/images/titleEnter.png";
-		}
-		// trace(path, FileSystem.exists(path));
-		titleText.frames = FlxAtlasFrames.fromSparrow(BitmapData.fromFile(path), File.getContent(StringTools.replace(path, ".png", ".xml")));
-		titleText.setGraphicSize(Std.int(titleText.width * titleJSON.startscale));
-		#else
 		titleText.frames = Paths.getSparrowAtlas('titleEnter');
-		#end
 		titleText.animation.addByPrefix('idle', "Press Enter to Begin", 24);
 		titleText.animation.addByPrefix('press', "ENTER PRESSED", 24);
 		titleText.antialiasing = ClientPrefs.globalAntialiasing;
@@ -328,12 +258,12 @@ class TitleState extends MusicBeatState
 		credTextShit.visible = false;
 
 		tbdSpr = new FlxSprite(0, FlxG.height * 0.52).loadGraphic(Paths.image('TBDLogoBW'));
-		add(tbdSpr);
 		tbdSpr.visible = false;
 		tbdSpr.setGraphicSize(Std.int(tbdSpr.width * 0.8));
 		tbdSpr.updateHitbox();
 		tbdSpr.screenCenter(X);
 		tbdSpr.antialiasing = true;
+		add(tbdSpr);
 
 		FlxTween.tween(credTextShit, {y: credTextShit.y + 20}, 2.9, {ease: FlxEase.quadInOut, type: PINGPONG});
 
