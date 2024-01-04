@@ -1578,28 +1578,28 @@ class PlayState extends MusicBeatState
 
 	public function startVideo(name:String):Void
 	{
-	#if VIDEOS_ALLOWED
-	var foundFile:Bool = false;
+		#if VIDEOS_ALLOWED
+		var foundFile:Bool = false;
 
-	var fileName:String = #if MODS_ALLOWED Paths.modFolders('videos/' + name + '.' + Paths.VIDEO_EXT); #else ''; #end
-	#if sys
-	if (FileSystem.exists(fileName))
-		foundFile = true;
-	#end
-
-	if (!foundFile)
-	{
-		fileName = Paths.video(name);
-
+		var fileName:String = #if MODS_ALLOWED Paths.modFolders('videos/' + name + '.' + Paths.VIDEO_EXT); #else ''; #end
 		#if sys
 		if (FileSystem.exists(fileName))
-		#else
-		if (OpenFlAssets.exists(fileName))
-		#end
 			foundFile = true;
-	}
+		#end
 
-	if (foundFile)
+		if (!foundFile)
+		{
+			fileName = Paths.video(name);
+
+			#if sys
+			if (FileSystem.exists(fileName))
+			#else
+			if (OpenFlAssets.exists(fileName))
+			#end
+			foundFile = true;
+		}
+
+		if (foundFile)
 		{
 			inCutscene = true;
 
@@ -1608,28 +1608,28 @@ class PlayState extends MusicBeatState
 			bg.cameras = [camHUD];
 			add(bg);
 
-		var video:FlxVideo = new FlxVideo();
-		video.onEndReached.add(function()
-		{
-			video.dispose();
-
-			remove(bg);
-
-			if (endingSong)
+			var video:FlxVideo = new FlxVideo();
+			video.onEndReached.add(function()
 			{
-				endSong();
-			}
-			else
-			{
-				startCountdown();
-			}
-		});
-		video.load(fileName);
+				video.dispose();
 
-		new FlxTimer().start(0.001, function(tmr:FlxTimer):Void
-		{
-			video.play();
-		});
+				remove(bg);
+
+				if (endingSong)
+				{
+					endSong();
+				}
+				else
+				{
+					startCountdown();
+				}
+			});
+			video.load(fileName);
+
+			new FlxTimer().start(0.001, function(tmr:FlxTimer):Void
+			{
+				video.play();
+			});
 
 			return;
 		}
@@ -3829,9 +3829,12 @@ class PlayState extends MusicBeatState
 				trace(val1 + ' & ' + val2);
 
 				if (val2 != 0)
-					FlxTween.tween(vignette, {alpha: val1}, val2, {ease: FlxEase.linear, onComplete: function(twn:FlxTween)
-					{
-					}});
+					FlxTween.tween(vignette, {alpha: val1}, val2, {
+						ease: FlxEase.linear,
+						onComplete: function(twn:FlxTween)
+						{
+						}
+					});
 			case 'Red Static':
 				var val1:Float = Std.parseFloat(value1);
 				var val2:Float = Std.parseFloat(value2);
@@ -3847,9 +3850,12 @@ class PlayState extends MusicBeatState
 				trace(val1 + ' & ' + val2);
 
 				if (val2 != 0)
-					FlxTween.tween(redStatic, {alpha: val1}, val2, {ease: FlxEase.linear, onComplete: function(twn:FlxTween)
-					{
-					}});
+					FlxTween.tween(redStatic, {alpha: val1}, val2, {
+						ease: FlxEase.linear,
+						onComplete: function(twn:FlxTween)
+						{
+						}
+					});
 			case 'Show death screen':
 				var val1:Float = Std.parseFloat(value1);
 				var val2:Float = Std.parseFloat(value2);
@@ -3861,15 +3867,24 @@ class PlayState extends MusicBeatState
 					val2 = 0.0001;
 				forcecamZooming = false;
 				camZooming = false;
-				FlxTween.tween(imdead, {alpha: val1}, val2, {ease: FlxEase.linear, onComplete: function(twn:FlxTween)
-				{
-				}});
-				FlxTween.tween(cambgwindo, {alpha: val1}, val2, {ease: FlxEase.linear, onComplete: function(twn:FlxTween)
-				{
-				}});
-				FlxTween.tween(cambgwindo2, {alpha: val1}, val2, {ease: FlxEase.linear, onComplete: function(twn:FlxTween)
-				{
-				}});
+				FlxTween.tween(imdead, {alpha: val1}, val2, {
+					ease: FlxEase.linear,
+					onComplete: function(twn:FlxTween)
+					{
+					}
+				});
+				FlxTween.tween(cambgwindo, {alpha: val1}, val2, {
+					ease: FlxEase.linear,
+					onComplete: function(twn:FlxTween)
+					{
+					}
+				});
+				FlxTween.tween(cambgwindo2, {alpha: val1}, val2, {
+					ease: FlxEase.linear,
+					onComplete: function(twn:FlxTween)
+					{
+					}
+				});
 
 			case 'UI visibilty':
 				if (value1 == null || value1 == 'false')
@@ -4014,9 +4029,12 @@ class PlayState extends MusicBeatState
 				if (Math.isNaN(val2) || val2 == 0)
 					val2 = 0.0001;
 
-				FlxTween.tween(char, {alpha: 1}, val2, {ease: FlxEase.linear, onComplete: function(twn:FlxTween)
-				{
-				}});
+				FlxTween.tween(char, {alpha: 1}, val2, {
+					ease: FlxEase.linear,
+					onComplete: function(twn:FlxTween)
+					{
+					}
+				});
 			case 'Cat Doodles Stuff':
 				var val1:Float = Std.parseFloat(value1);
 				var val2:Float = Std.parseFloat(value2);
@@ -4031,9 +4049,12 @@ class PlayState extends MusicBeatState
 					val2 = 0.0001;
 
 				if (value3 == null || value3 == '')
-					FlxTween.tween(bakaOverlay, {alpha: val1}, val2, {ease: FlxEase.linear, onComplete: function(twn:FlxTween)
-					{
-					}});
+					FlxTween.tween(bakaOverlay, {alpha: val1}, val2, {
+						ease: FlxEase.linear,
+						onComplete: function(twn:FlxTween)
+						{
+						}
+					});
 
 				if (value3 != null && value3 != '')
 				{

@@ -4,14 +4,12 @@ package;
 import android.content.Context;
 import android.os.Build;
 #end
-
 import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.FlxState;
 import lime.system.System;
 import openfl.Lib;
 import openfl.display.Sprite;
-
 #if CRASH_HANDLER
 import haxe.CallStack;
 import haxe.Exception;
@@ -138,7 +136,6 @@ class Main extends Sprite
 				}
 			}
 		}
-
 		@:privateAccess
 		if (FlxG.game != null)
 		{
