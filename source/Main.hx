@@ -7,6 +7,7 @@ import android.os.Build;
 import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.FlxState;
+import haxe.io.Path;
 import lime.system.System;
 import openfl.Lib;
 import openfl.display.Sprite;
