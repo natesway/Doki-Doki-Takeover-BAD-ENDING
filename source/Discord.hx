@@ -1,93 +1,57 @@
 package;
 
-import Sys.sleep;
-import lime.app.Application;
-import discord_rpc.DiscordRpc;
-#if LUA_ALLOWED
-import llua.Lua;
-import llua.State;
-#end
-
-using StringTools;
+#if DISCORD_ALLOWED
+import hxdiscord_rpc.Discord as RichPresence;
+import hxdiscord_rpc.Types;
+import openfl.Lib;
+import sys.thread.Thread;
 
 class DiscordClient
 {
-	public function new()
+	public static function initialize():Void
 	{
-		trace("Discord Client starting...");
-		DiscordRpc.start({
-			clientID: "992607396780322907",
-			onReady: onReady,
-			onError: onError,
-			onDisconnected: onDisconnected
-		});
-		trace("Discord Client started.");
+		var handlers:DiscordEventHandlers = DiscordEventHandlers.create();
+		handlers.ready = cpp.Function.fromStaticFunction(onReady);
+		handlers.disconnected = cpp.Function.fromStaticFunction(onDisconnected);
+		handlers.errored = cpp.Function.fromStaticFunction(onError);
+		RichPresence.Initialize("992607396780322907", cpp.RawPointer.addressOf(handlers), 1, null);
 
-		while (true)
+		// Daemon Thread
+		Thread.create(function()
 		{
-			DiscordRpc.process();
-			sleep(2);
-			// trace("Discord Client Update");
-		}
+			while (true)
+			{
+				#if FEATURE_DISCORD_DISABLE_IO_THREAD
+				RichPresence.UpdateConnection();
+				#end
+				RichPresence.RunCallbacks();
 
-		DiscordRpc.shutdown();
-	}
-
-	public static function shutdown()
-	{
-		DiscordRpc.shutdown();
-	}
-
-	static function onReady()
-	{
-		DiscordRpc.presence({
-			details: "In the Menus",
-			state: null,
-			largeImageKey: 'ddto_be_discord',
-			largeImageText: "Friday Night Funkin': Doki Doki Takeover! - BAD ENDING"
+				// Wait 2 seconds until the next loop...
+				Sys.sleep(2);
+			}
 		});
-	}
 
-	static function onError(_code:Int, _message:String)
-	{
-		trace('Error! $_code : $_message');
-	}
+		Lib.application.onExit.add((exitCode:Int) -> RichPresence.Shutdown());
 
-	static function onDisconnected(_code:Int, _message:String)
-	{
-		trace('Disconnected! $_code : $_message');
-	}
-
-	public static function initialize()
-	{
-		var DiscordDaemon = sys.thread.Thread.create(() ->
-		{
-			new DiscordClient();
-		});
 		trace("Discord Client initialized");
 	}
 
-	public static function changePresence(details:String, state:Null<String>, ?smallImageKey:String, ?hasStartTimestamp:Bool, ?endTimestamp:Float)
+	public static function changePresence(details:String, state:String, ?smallImageKey:String, ?hasStartTimestamp:Bool, ?endTimestamp:Float):Void
 	{
-		var startTimestamp:Float = if (hasStartTimestamp) Date.now().getTime() else 0;
+		var startTimestamp:Float = hasStartTimestamp ? Date.now().getTime() : 0;
 
 		if (endTimestamp > 0)
-		{
 			endTimestamp = startTimestamp + endTimestamp;
-		}
 
-		DiscordRpc.presence({
-			details: details,
-			state: state,
-			largeImageKey: 'ddto_be_discord',
-			largeImageText: 'Psych Engine Version: ${MainMenuState.psychEngineVersion}\nBAD ENDING Version: ${Application.current.meta.get('version')}',
-			smallImageKey: smallImageKey,
-			// Obtained times are in milliseconds so they are divided so Discord can use it
-			startTimestamp: Std.int(startTimestamp / 1000),
-			endTimestamp: Std.int(endTimestamp / 1000)
-		});
-
-		// trace('Discord RPC Updated. Arguments: $details, $state, $smallImageKey, $hasStartTimestamp, $endTimestamp');
+		var discordPresence:DiscordRichPresence = DiscordRichPresence.create();
+		discordPresence.details = details;
+		discordPresence.state = state;
+		discordPresence.largeImageKey = "ddto_be_discord";
+		discordPresence.largeImageText = 'Psych Engine Version: ${MainMenuState.psychEngineVersion}\nBAD ENDING Version: ${Lib.application.meta['version']}';
+		discordPresence.smallImageKey = smallImageKey;
+		discordPresence.startTimestamp = Std.int(startTimestamp / 1000);
+		discordPresence.endTimestamp = Std.int(endTimestamp / 1000);
+		RichPresence.UpdatePresence(cpp.RawConstPointer.addressOf(discordPresence));
 	}
 
 	#if LUA_ALLOWED
@@ -100,4 +64,20 @@ class DiscordClient
 			});
 	}
 	#end
+
+	private static function onReady(request:cpp.RawConstPointer<DiscordUser>):Void
+	{
+		DiscordClient.changePresence('In the Menus', null);
+	}
+
+	private static function onDisconnected(errorCode:Int, message:cpp.ConstCharStar):Void
+	{
+		trace('Disconnected! $errorCode : ${cast (message, String)}');
+	}
+
+	private static function onError(errorCode:Int, message:cpp.ConstCharStar):Void
+	{
+		trace('Error! $errorCode : ${cast (message, String)}');
+	}
 }
+#end
