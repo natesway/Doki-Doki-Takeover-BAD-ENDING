@@ -34,6 +34,9 @@ import flixel.util.FlxStringUtil;
 import flixel.util.FlxTimer;
 import motion.easing.*;
 import haxe.Json;
+#if VIDEOS_ALLOWED
+import hxvlc.flixel.FlxVideo;
+#end
 import lime.utils.Assets;
 import openfl.filters.ShaderFilter;
 import openfl.geom.Point;
@@ -1577,46 +1580,57 @@ class PlayState extends MusicBeatState
 	{
 	#if VIDEOS_ALLOWED
 	var foundFile:Bool = false;
+
 	var fileName:String = #if MODS_ALLOWED Paths.modFolders('videos/' + name + '.' + Paths.VIDEO_EXT); #else ''; #end
 	#if sys
 	if (FileSystem.exists(fileName))
-	{
 		foundFile = true;
-	}
 	#end
 
 	if (!foundFile)
 	{
 		fileName = Paths.video(name);
+
 		#if sys
 		if (FileSystem.exists(fileName))
-		{
 		#else
 		if (OpenFlAssets.exists(fileName))
-		{
 		#end
 			foundFile = true;
-		}
-		} if (foundFile)
+	}
+
+	if (foundFile)
 		{
 			inCutscene = true;
+
 			var bg = new FlxSprite(-FlxG.width, -FlxG.height).makeGraphic(FlxG.width * 3, FlxG.height * 3, FlxColor.BLACK);
 			bg.scrollFactor.set();
 			bg.cameras = [camHUD];
 			add(bg);
 
-			(new FlxVideo(fileName)).finishCallback = function()
+		var video:FlxVideo = new FlxVideo();
+		video.onEndReached.add(function()
+		{
+			video.dispose();
+
+			remove(bg);
+
+			if (endingSong)
 			{
-				remove(bg);
-				if (endingSong)
-				{
-					endSong();
-				}
-				else
-				{
-					startCountdown();
-				}
+				endSong();
 			}
+			else
+			{
+				startCountdown();
+			}
+		});
+		video.load(fileName);
+
+		new FlxTimer().start(0.001, function(tmr:FlxTimer):Void
+		{
+			video.play();
+		});
+
 			return;
 		}
 		else
