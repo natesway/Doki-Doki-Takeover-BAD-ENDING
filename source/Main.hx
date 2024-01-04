@@ -8,7 +8,7 @@ import openfl.Assets;
 import openfl.Lib;
 import openfl.display.Sprite;
 import openfl.events.Event;
-#if desktop
+#if DISCORD_ALLOWED
 import Discord.DiscordClient;
 #end
 // crash handler stuff

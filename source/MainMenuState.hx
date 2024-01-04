@@ -1,6 +1,6 @@
 package;
 
-#if desktop
+#if DISCORD_ALLOWED
 import Discord.DiscordClient;
 #end
 import flixel.FlxG;
@@ -74,7 +74,7 @@ class MainMenuState extends MusicBeatState
 		if (!FlxG.sound.music.playing)
 			FlxG.sound.playMusic(Paths.music('freakyMenu'));
 
-		#if desktop
+		#if DISCORD_ALLOWED
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
 		#end
@@ -283,7 +283,7 @@ class MainMenuState extends MusicBeatState
 					}
 				});
 			}
-			#if desktop
+			#if DISCORD_ALLOWED
 			else if (FlxG.keys.anyJustPressed(debugKeys) && ClientPrefs.storycomplete)
 			{
 				selectedSomethin = true;
