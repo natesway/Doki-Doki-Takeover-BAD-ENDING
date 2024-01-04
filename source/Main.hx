@@ -1,150 +1,145 @@
 package;
 
-import flixel.graphics.FlxGraphic;
+#if android
+import android.content.Context;
+#end
+
 import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.FlxState;
-import openfl.Assets;
+import lime.system.System;
 import openfl.Lib;
 import openfl.display.Sprite;
-import openfl.events.Event;
-#if DISCORD_ALLOWED
-import Discord.DiscordClient;
-#end
-// crash handler stuff
+
 #if CRASH_HANDLER
 import haxe.CallStack;
-import haxe.io.Path;
-import lime.app.Application;
-import lime.system.System;
+import haxe.Exception;
+import haxe.Log;
+import openfl.errors.Error;
+import openfl.events.ErrorEvent;
 import openfl.events.UncaughtErrorEvent;
 import sys.FileSystem;
 import sys.io.File;
-import sys.io.Process;
 #end
 
 using StringTools;
 
 class Main extends Sprite
 {
-	var game = {
-		width: 1280, // WINDOW width
-		height: 720, // WINDOW height
-		initialState: TitleState, // initial game state
-		zoom: -1.0, // game state bounds
-		framerate: 60, // default framerate
-		skipSplash: true, // if the default flixel splash screen should be skipped
-		startFullscreen: false // if the game should start at fullscreen mode
-	};
-
 	public static var fpsVar:FPSCounter;
 
-	// You can pretty much ignore everything from here on - your code should go in your states.
-
-	public static function main():Void
-	{
-		Lib.current.addChild(new Main());
-	}
-
-	public function new()
+	public function new():Void
 	{
 		super();
 
-		if (stage != null)
-		{
-			init();
-		}
-		else
-		{
-			addEventListener(Event.ADDED_TO_STAGE, init);
-		}
-	}
-
-	private function init(?E:Event):Void
-	{
-		if (hasEventListener(Event.ADDED_TO_STAGE))
-		{
-			removeEventListener(Event.ADDED_TO_STAGE, init);
-		}
-
-		setupGame();
-	}
-
-	private function setupGame():Void
-	{
-		var stageWidth:Int = Lib.current.stage.stageWidth;
-		var stageHeight:Int = Lib.current.stage.stageHeight;
-
-		if (game.zoom == -1.0)
-		{
-			var ratioX:Float = stageWidth / game.width;
-			var ratioY:Float = stageHeight / game.height;
-			game.zoom = Math.min(ratioX, ratioY);
-			game.width = Math.ceil(stageWidth / game.zoom);
-			game.height = Math.ceil(stageHeight / game.zoom);
-		}
-
-		ClientPrefs.loadDefaultKeys();
-
-		addChild(new FlxGame(game.width, game.height, game.initialState, #if (flixel < "5.0.0") game.zoom, #end game.framerate, game.framerate,
-			game.skipSplash, game.startFullscreen));
-
-		fpsVar = new FPSCounter(10, 3, 0xFFFFFF);
-		addChild(fpsVar);
-
-		if (fpsVar != null)
-			fpsVar.visible = ClientPrefs.showFPS;
-
-		#if html5
-		FlxG.mouse.visible = false;
+		#if android
+		Sys.setCwd(Path.addTrailingSlash(Context.getObbDir()));
+		#elseif (ios || switch)
+		Sys.setCwd(System.documentsDirectory);
 		#end
 
 		#if CRASH_HANDLER
 		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
 		#end
+
+		ClientPrefs.loadDefaultKeys();
+
+		FlxG.signals.gameResized.add(onResizeGame);
+
+		addChild(new FlxGame(1280, 720, TitleState, 60, 60, true, false));
+
+		#if android
+		FlxG.android.preventDefaultKeys = [BACK];
+		#end
+
+		fpsVar = new FPSCounter(10, 3, 0xFFFFFF);
+
+		if (fpsVar != null)
+			fpsVar.visible = ClientPrefs.showFPS;
+
+		addChild(fpsVar);
+
+		#if html5
+		FlxG.mouse.visible = false;
+		#end
 	}
 
-	// Code was entirely made by sqirra-rng for their fnf engine named "Izzy Engine", big props to them!!!
-	// very cool person for real they don't get enough credit for their work
 	#if CRASH_HANDLER
-	function onCrash(e:UncaughtErrorEvent):Void
+	private inline function onUncaughtError(event:UncaughtErrorEvent):Void
 	{
-		var errMsg:String = "";
-		var path:String;
-		var callStack:Array<StackItem> = CallStack.exceptionStack(true);
-		var dateNow:String = Date.now().toString();
+		event.preventDefault();
+		event.stopImmediatePropagation();
 
-		dateNow = dateNow.replace(" ", "_");
-		dateNow = dateNow.replace(":", "'");
+		final log:Array<String> = [];
 
-		path = "./crash/" + "BadEnding_" + dateNow + ".txt";
+		if (Std.isOfType(event.error, Error))
+			log.push(cast(event.error, Error).message);
+		else if (Std.isOfType(event.error, ErrorEvent))
+			log.push(cast(event.error, ErrorEvent).text);
+		else
+			log.push(Std.string(event.error));
 
-		for (stackItem in callStack)
+		for (item in CallStack.exceptionStack(true))
 		{
-			switch (stackItem)
+			switch (item)
 			{
+				case CFunction:
+					log.push('C Function');
+				case Module(m):
+					log.push('Module [$m]');
 				case FilePos(s, file, line, column):
-					errMsg += file + " (line " + line + ")\n";
-				default:
-					Sys.println(stackItem);
+					log.push('$file [line $line]');
+				case Method(classname, method):
+					log.push('$classname [method $method]');
+				case LocalFunction(name):
+					log.push('Local Function [$name]');
 			}
 		}
 
-		errMsg += "\nUncaught Error: "
-			+ e.error
-			+
-			"\nPlease report this error to the GitHub page: https://github.com/ActualMandM/Doki-Doki-Takeover-BAD-ENDING\n\n> Crash Handler written by: sqirra-rng";
+		final msg:String = log.join('\n');
 
-		if (!FileSystem.exists("./crash/"))
-			FileSystem.createDirectory("./crash/");
+		#if sys
+		try
+		{
+			if (!FileSystem.exists('crash'))
+				FileSystem.createDirectory('crash');
 
-		File.saveContent(path, errMsg + "\n");
+			File.saveContent('crash/BadEnding_' + Date.now().toString().replace(' ', '-').replace(':', "'") + '.txt', msg);
+		}
+		catch (e:Exception)
+			Log.trace('Couldn\'t save error message "${e.message}"', null);
+		#end
 
-		Sys.println(errMsg);
-		Sys.println("Crash dump saved in " + Path.normalize(path));
-
-		Application.current.window.alert(errMsg, "Error!");
+		Log.trace(msg, null);
+		Lib.application.window.alert(msg, 'Error!');
 		System.exit(1);
 	}
 	#end
+
+	private inline function onResizeGame(width:Int, height:Int):Void
+	{
+		if (FlxG.cameras != null && (FlxG.cameras.list != null && FlxG.cameras.list.length > 0))
+		{
+			for (camera in FlxG.cameras.list)
+			{
+				if (camera != null && (camera.filters != null && camera.filters.length > 0))
+				{
+					// Shout out to Ne_Eo for bringing this to my attention.
+					@:privateAccess
+					if (camera.flashSprite != null)
+					{
+						camera.flashSprite.__cacheBitmap = null;
+						camera.flashSprite.__cacheBitmapData = null;
+					}
+				}
+			}
+		}
+
+		@:privateAccess
+		if (FlxG.game != null)
+		{
+			FlxG.game.__cacheBitmap = null;
+			FlxG.game.__cacheBitmapData = null;
+		}
+	}
 }
