@@ -64,7 +64,11 @@ class Main extends Sprite
 		if (fpsVar != null)
 			fpsVar.visible = ClientPrefs.showFPS;
 
+		#if !mobile
 		addChild(fpsVar);
+		#else
+		FlxG.game.addChild(fpsVar);
+		#end
 
 		#if html5
 		FlxG.mouse.visible = false;
@@ -125,6 +129,10 @@ class Main extends Sprite
 
 	private inline function onResizeGame(width:Int, height:Int):Void
 	{
+		#if (mobile || switch)
+		fpsVar.scaleX = fpsVar.scaleY = Math.min(FlxG.stage.stageWidth / FlxG.width, FlxG.stage.stageHeight / FlxG.height);
+		#end
+
 		if (FlxG.cameras != null && (FlxG.cameras.list != null && FlxG.cameras.list.length > 0))
 		{
 			for (camera in FlxG.cameras.list)
