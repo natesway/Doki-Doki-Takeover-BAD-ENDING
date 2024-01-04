@@ -29,7 +29,7 @@
 
 	<section if="cpp">
 		<define name="DISCORD_ALLOWED" if="desktop" />
-		<define name="LUA_ALLOWED" />
+		<!--<define name="LUA_ALLOWED" />-->
 		<define name="VIDEOS_ALLOWED" if="desktop || mobile" />
 	</section>
 
