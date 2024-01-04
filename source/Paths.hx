@@ -256,7 +256,6 @@ class Paths
 				return File.getContent(levelPath);
 		}
 		#end
-
 		return Assets.getText(getPath(key, TEXT));
 	}
 
