@@ -34,7 +34,7 @@ class Main extends Sprite
 
 		#if android
 		Sys.setCwd(Path.addTrailingSlash(Context.getObbDir()));
-		#elseif (ios || switch)
+		#elseif ios
 		Sys.setCwd(System.documentsDirectory);
 		#end
 
