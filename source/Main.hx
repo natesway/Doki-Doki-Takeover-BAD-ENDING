@@ -49,6 +49,10 @@ class Main extends Sprite
 
 		FlxG.signals.gameResized.add(onResizeGame);
 
+		#if mobile
+		Storage.copyNecessaryFiles();
+		#end
+
 		addChild(new FlxGame(1280, 720, TitleState, 60, 60, true, false));
 
 		#if android
