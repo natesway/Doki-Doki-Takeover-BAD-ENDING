@@ -387,10 +387,19 @@ class Paths
 		#end
 		// I hate this so god damn much
 		var gottenPath:String = getPath('$path/$key.$SOUND_EXT', SOUND, library);
+
 		gottenPath = gottenPath.substring(gottenPath.indexOf(':') + 1, gottenPath.length);
-		// trace(gottenPath);
+
 		if (!currentTrackedSounds.exists(gottenPath))
-			currentTrackedSounds.set(gottenPath, Sound.fromFile('./' + gottenPath));
+		{
+			var folder:String = '';
+
+			if (path == 'songs')
+				folder = 'songs:';
+
+			currentTrackedSounds.set(gottenPath, OpenFlAssets.getSound(folder + getPath('$path/$key.$SOUND_EXT', SOUND, library)));
+		}
+
 		localTrackedAssets.push(key);
 		return currentTrackedSounds.get(gottenPath);
 	}
@@ -446,11 +455,13 @@ class Paths
 		if (currentModDirectory != null && currentModDirectory.length > 0)
 		{
 			var fileToCheck:String = mods(currentModDirectory + '/' + key);
+
 			if (FileSystem.exists(fileToCheck))
 			{
 				return fileToCheck;
 			}
 		}
+
 		return 'mods/' + key;
 	}
 
@@ -458,17 +469,20 @@ class Paths
 	{
 		var list:Array<String> = [];
 		var modsFolder:String = Paths.mods();
+
 		if (FileSystem.exists(modsFolder))
 		{
 			for (folder in FileSystem.readDirectory(modsFolder))
 			{
 				var path = haxe.io.Path.join([modsFolder, folder]);
+
 				if (sys.FileSystem.isDirectory(path) && !Paths.ignoreModFolders.contains(folder) && !list.contains(folder))
 				{
 					list.push(folder);
 				}
 			}
 		}
+
 		return list;
 	}
 	#end
