@@ -262,7 +262,7 @@ class TitleState extends MusicBeatState
 		tbdSpr.setGraphicSize(Std.int(tbdSpr.width * 0.8));
 		tbdSpr.updateHitbox();
 		tbdSpr.screenCenter(X);
-		tbdSpr.antialiasing = true;
+		tbdSpr.antialiasing = ClientPrefs.globalAntialiasing;
 		add(tbdSpr);
 
 		FlxTween.tween(credTextShit, {y: credTextShit.y + 20}, 2.9, {ease: FlxEase.quadInOut, type: PINGPONG});
