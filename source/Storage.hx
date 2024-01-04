@@ -16,7 +16,7 @@ class Storage
 	public static function copyNecessaryFiles():Void
 	{
 		#if MODS_ALLOWED
-		for (dir in ['characters', 'stages', 'weeks'])
+		for (dir in ['characters', 'data', 'stages', 'weeks'])
 		{
 			for (file in Assets.list().filter(folder -> folder.startsWith('assets/$dir')))
 			{
