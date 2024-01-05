@@ -194,12 +194,22 @@ class FreeplayState extends MusicBeatState
 		textBG.alpha = 0.6;
 		add(textBG);
 
-		var leText:String = "Press SPACE to listen to the Song / Press CTRL to open the Gameplay Changers Menu / Press RESET to Reset your Score and Accuracy.";
+		#if mobile
+		final leText:String = "Press X to listen to the Song / Press C to open the Gameplay Changers Menu / Press Y to Reset your Score and Accuracy.";
+		#else
+		final leText:String = "Press SPACE to listen to the Song / Press CTRL to open the Gameplay Changers Menu / Press RESET to Reset your Score and Accuracy.";
+		#end
 
-		var text:FlxText = new FlxText(textBG.x, textBG.y + 4, FlxG.width, leText, 16);
+		var text:FlxText = new FlxText(textBG.x, textBG.y + 4, FlxG.width, , 16);
 		text.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT);
 		text.scrollFactor.set();
 		add(text);
+
+		#if mobile
+		addVPad(LEFT_FULL, A_B_C_X_Y);
+
+		vPad.y -= 26;
+		#end
 
 		super.create();
 	}
@@ -251,8 +261,8 @@ class FreeplayState extends MusicBeatState
 		var leftP = controls.UI_LEFT_P;
 		var rightP = controls.UI_RIGHT_P;
 		var accepted = controls.ACCEPT;
-		var space = FlxG.keys.justPressed.SPACE;
-		var ctrl = FlxG.keys.justPressed.CONTROL;
+		var space = FlxG.keys.justPressed.SPACE #if mobile || vPad.buttonX.justPressed #end;
+		var ctrl = FlxG.keys.justPressed.CONTROL #if mobile || vPad.buttonC.justPressed #end;
 
 		var shiftMult:Int = 1;
 		if (FlxG.keys.pressed.SHIFT)
@@ -351,11 +361,12 @@ class FreeplayState extends MusicBeatState
 				// Make difficulty thingie visible here
 			}
 		}
-		else if (controls.RESET)
+		else if (controls.RESET #if mobile || vPad.buttonY.justPressed #end)
 		{
 			openSubState(new ResetScoreSubState(songs[curSelected].songName, curDifficulty, songs[curSelected].songCharacter));
 			FlxG.sound.play(Paths.sound('scrollMenu'));
 		}
+
 		super.update(elapsed);
 	}
 

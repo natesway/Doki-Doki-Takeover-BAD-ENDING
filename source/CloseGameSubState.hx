@@ -50,6 +50,13 @@ class CloseGameSubState extends MusicBeatSubstate
 		add(selectGrp);
 
 		changeItem();
+
+		#if mobile
+		addVPad(LEFT_RIGHT, A_B);
+
+		if (FlxG.state is MainMenuState)
+			vPad.y -= 44;
+		#end
 	}
 
 	override function update(elapsed:Float):Void
@@ -98,11 +105,12 @@ class CloseGameSubState extends MusicBeatSubstate
 		{
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			MainMenuState.curSelected = 0;
-			MusicBeatState.resetState();
+
 			#if mobile
 			FlxTransitionableState.skipNextTransOut = true;
 			FlxG.resetState();
 			#else
+			MusicBeatState.resetState();
 			close();
 			#end
 		}

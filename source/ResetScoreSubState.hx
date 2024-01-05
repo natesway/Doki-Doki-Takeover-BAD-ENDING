@@ -74,6 +74,13 @@ class ResetScoreSubState extends MusicBeatSubstate
 		noText.x += 200;
 		add(noText);
 		updateOptions();
+
+		#if mobile
+		addVPad(LEFT_RIGHT, A_B);
+
+		if (FlxG.state is FreeplayState)
+			vPad.y -= 26;
+		#end
 	}
 
 	override function update(elapsed:Float)

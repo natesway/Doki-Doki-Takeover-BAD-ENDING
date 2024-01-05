@@ -19,18 +19,27 @@ class FlashingState extends MusicBeatState
 
 	override function create()
 	{
-		super.create();
-
 		bg = new FlxSprite(0, 0).loadGraphic(Paths.image('DDLCIntroWarning', 'preload'));
 		bg.alpha = 0;
 		bg.screenCenter(X);
-		FlxTween.tween(bg, {alpha: 1}, 1, {ease: FlxEase.quadOut});
 		add(bg);
+
+		FlxTween.tween(bg, {alpha: 1}, 1, {ease: FlxEase.quadOut});
+
+		super.create();
 	}
 
 	override function update(elapsed:Float)
 	{
-		if (controls.ACCEPT && !selected)
+		var pressedEnter:Bool = controls.ACCEPT;
+
+		#if mobile
+		for (touch in FlxG.touches.list)
+			if (touch.justPressed)
+				pressedEnter = true;
+		#end
+
+		if (pressedEnter && !selected)
 		{
 			selected = true;
 			FlxG.sound.play(Paths.sound('confirmMenu'));
@@ -47,6 +56,7 @@ class FlashingState extends MusicBeatState
 				}
 			});
 		}
+
 		super.update(elapsed);
 	}
 }

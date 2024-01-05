@@ -41,7 +41,7 @@ class CreditsState extends MusicBeatState
 		grpOptions = new FlxTypedGroup<AlphabetText>();
 		add(grpOptions);
 
-		var pisspoop:Array<Array<String>> = [
+		final pisspoop:Array<Array<String>> = [
 			// Name - Icon name - Description - Link
 			['Team TBD'],
 			[
@@ -164,6 +164,11 @@ class CreditsState extends MusicBeatState
 		add(descText);
 
 		changeSelection();
+
+		#if mobile
+		addVPad(UP_DOWN, A_B);
+		#end
+
 		super.create();
 	}
 
@@ -177,6 +182,7 @@ class CreditsState extends MusicBeatState
 
 		if (upP)
 			changeSelection(-1);
+
 		if (downP)
 			changeSelection(1);
 
