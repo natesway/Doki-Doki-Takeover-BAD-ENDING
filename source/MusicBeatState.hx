@@ -13,6 +13,13 @@ import flixel.util.FlxColor;
 import flixel.util.FlxGradient;
 import flixel.FlxState;
 import flixel.FlxBasic;
+#if mobile
+import flixel.input.actions.FlxActionInput;
+import flixel.mobile.FlxHitbox;
+import flixel.mobile.FlxVirtualPad;
+import flixel.util.FlxDestroyUtil;
+import flixel.FlxCamera;
+#end
 
 class MusicBeatState extends FlxUIState
 {
@@ -25,6 +32,82 @@ class MusicBeatState extends FlxUIState
 
 	inline function get_controls():Controls
 		return PlayerSettings.player1.controls;
+
+	#if mobile
+	var hitbox:FlxHitbox;
+	var vPad:FlxVirtualPad;
+
+	var trackedInputsHitbox:Array<FlxActionInput> = [];
+	var trackedInputsVirtualPad:Array<FlxActionInput> = [];
+
+	public function addVPad(dPad:FlxDPadMode, action:FlxActionMode, ?visible = true):Void
+	{
+		if (vPad != null)
+			removeVPad();
+
+		vPad = new FlxVirtualPad(dPad, action);
+		vPad.visible = visible;
+		add(vPad);
+
+		controls.setVPad(vPad, dPad, action);
+		trackedInputsVirtualPad = controls.trackedInputs;
+		controls.trackedInputs = [];
+	}
+
+	public function addVPadCamera(defaultDrawTarget:Bool = true):Void
+	{
+		if (vPad != null)
+		{
+			var camControls:FlxCamera = new FlxCamera();
+			FlxG.cameras.add(camControls, defaultDrawTarget);
+			camControls.bgColor.alpha = 0;
+			vPad.cameras = [camControls];
+		}
+	}
+
+	public function removeVPad():Void
+	{
+		if (trackedInputsVirtualPad.length > 0)
+			controls.removeVControlsInput(trackedInputsVirtualPad);
+
+		if (vPad != null)
+			remove(vPad);
+	}
+
+	public function addHitbox(?visible = true):Void
+	{
+		if (hitbox != null)
+			removeHitbox();
+
+		hitbox = new FlxHitbox(ammo, Std.int(FlxG.width / 4), FlxG.height, [0x876DB0, 0x488DB0, 0x5F9C4C, 0x946B99]);
+		hitbox.visible = visible;
+		add(hitbox);
+
+		controls.setHitbox(hitbox, PlayState.SONG.mania);
+		trackedInputsHitbox = controls.trackedInputs;
+		controls.trackedInputs = [];
+	}
+
+	public function addHitboxCamera(DefaultDrawTarget:Bool = true):Void
+	{
+		if (hitbox != null)
+		{
+			var camControls:FlxCamera = new FlxCamera();
+			FlxG.cameras.add(camControls, DefaultDrawTarget);
+			camControls.bgColor.alpha = 0;
+			hitbox.cameras = [camControls];
+		}
+	}
+
+	public function removeHitbox():Void
+	{
+		if (trackedInputsHitbox.length > 0)
+			controls.removeVControlsInput(trackedInputsHitbox);
+
+		if (hitbox != null)
+			remove(hitbox);
+	}
+	#end
 
 	override function create()
 	{
