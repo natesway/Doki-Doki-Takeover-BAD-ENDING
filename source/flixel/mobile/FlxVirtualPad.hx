@@ -24,6 +24,7 @@ enum FlxActionMode
 	A;
 	B;
 	A_B;
+	A_C;
 	A_B_C;
 	A_B_X_Y;
 	A_B_C_X_Y;
@@ -95,6 +96,9 @@ class FlxVirtualPad extends FlxSpriteGroup
 				add(buttonB = createButton(FlxG.width - 132, FlxG.height - 135, 'b', 0xFFCB00));
 			case A_B:
 				add(buttonB = createButton(FlxG.width - 258, FlxG.height - 135, 'b', 0xFFCB00));
+				add(buttonA = createButton(FlxG.width - 132, FlxG.height - 135, 'a', 0xFF0000));
+			case A_C:
+				add(buttonB = createButton(FlxG.width - 258, FlxG.height - 135, 'c', 0x44FF00));
 				add(buttonA = createButton(FlxG.width - 132, FlxG.height - 135, 'a', 0xFF0000));
 			case A_B_C:
 				add(buttonC = createButton(FlxG.width - 384, FlxG.height - 135, 'c', 0x44FF00));
