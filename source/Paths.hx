@@ -407,7 +407,7 @@ class Paths
 	#if MODS_ALLOWED
 	public static inline function mods(key:String = '')
 	{
-		return 'mods/' + key;
+		return #if mobile Sys.getCwd() + #end 'mods/' + key;
 	}
 
 	public static inline function modsFont(key:String)
@@ -462,7 +462,7 @@ class Paths
 			}
 		}
 
-		return 'mods/' + key;
+		return #if mobile Sys.getCwd() + #end 'mods/' + key;
 	}
 
 	static public function getModDirectories():Array<String>

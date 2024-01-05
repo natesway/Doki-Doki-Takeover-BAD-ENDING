@@ -8,6 +8,7 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.display.FlxBackdrop;
 import flixel.addons.display.FlxGridOverlay;
+import flixel.addons.transition.FlxTransitionableState;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
 import flixel.text.FlxText;
@@ -130,7 +131,12 @@ class ControlsSubState extends MusicBeatSubstate
 			if (controls.BACK)
 			{
 				ClientPrefs.reloadControls();
-				close();
+				#if mobile
+			FlxTransitionableState.skipNextTransOut = true;
+			FlxG.resetState();
+			#else
+			close();
+			#end
 				FlxG.sound.play(Paths.sound('cancelMenu'));
 			}
 
