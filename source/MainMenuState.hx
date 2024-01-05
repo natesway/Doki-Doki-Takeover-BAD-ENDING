@@ -256,6 +256,10 @@ class MainMenuState extends MusicBeatState
 
 			if (ctrl && curSelected == 0)
 			{
+				#if mobile
+				removeVPad();
+				#end
+
 				openSubState(new GameplayChangersSubstate());
 			}
 
