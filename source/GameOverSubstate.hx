@@ -54,6 +54,7 @@ class GameOverSubstate extends MusicBeatSubstate
 		PlayState.instance.setOnLuas('inGameOver', true);
 
 		Conductor.songPosition = 0;
+
 		if (markovGameover)
 		{
 			deathSoundName = 'YuriWatchesYouDie';
@@ -84,6 +85,11 @@ class GameOverSubstate extends MusicBeatSubstate
 
 		FlxG.camera.zoom = camZoom;
 		FlxG.camera.follow(camFollowPos, LOCKON, 1);
+
+		#if mobile
+		addVPad(NONE, A_B);
+		addVPadCamera();
+		#end
 	}
 
 	// var isFollowingAlready:Bool = false;
