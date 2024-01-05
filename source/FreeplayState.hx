@@ -200,7 +200,7 @@ class FreeplayState extends MusicBeatState
 		final leText:String = "Press SPACE to listen to the Song / Press CTRL to open the Gameplay Changers Menu / Press RESET to Reset your Score and Accuracy.";
 		#end
 
-		var text:FlxText = new FlxText(textBG.x, textBG.y + 4, FlxG.width, , 16);
+		var text:FlxText = new FlxText(textBG.x, textBG.y + 4, FlxG.width, leText, 16);
 		text.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT);
 		text.scrollFactor.set();
 		add(text);
