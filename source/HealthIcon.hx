@@ -44,27 +44,17 @@ class HealthIcon extends FlxSprite
 				name = 'icons/icon-' + char; // Older versions of psych engine's support
 			if (!Paths.fileExists('images/' + name + '.png', IMAGE))
 				name = 'icons/icon-bf-old'; // Prevents crash from missing icon
+
 			var file:Dynamic = Paths.image(name);
 
-			isAnimated = false;
+			isAnimated = Paths.fileExists('images/' + name + '.xml', TEXT);
+
 			flipX = false;
-			var xmlPath:String = 'images/' + name + '.xml';
-			var path:String = '';
-			#if MODS_ALLOWED
-			path = Paths.modFolders(xmlPath);
-			if (!FileSystem.exists(path))
-				path = Paths.getPreloadPath(xmlPath);
-			if (FileSystem.exists(path))
-				isAnimated = true;
-			#else
-			path = Paths.getPreloadPath(xmlPath);
-			if (Assets.exists(path))
-				isAnimated = true;
-			#end
 
 			trace(isAnimated);
 
 			loadGraphic(file); // Load stupidly first for getting the file size
+
 			if (!isAnimated)
 			{
 				loadGraphic(file, true, Math.floor(width / 2), Math.floor(height)); // Then load it fr
@@ -83,9 +73,11 @@ class HealthIcon extends FlxSprite
 				animation.play('idle');
 				flipX = isPlayer;
 			}
+
 			this.char = char;
 
 			antialiasing = ClientPrefs.globalAntialiasing;
+
 			if (char.endsWith('-pixel'))
 			{
 				antialiasing = false;
