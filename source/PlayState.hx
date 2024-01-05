@@ -1414,27 +1414,11 @@ class PlayState extends MusicBeatState
 	public function reloadHealthBarGraphic(?prefix:String = '', ?suffix:String = '', ?offsetX:Float = 0, ?offsetY:Float = 0)
 	{
 		var path:String = prefix + 'healthBar' + suffix;
-		var gamePath:String = Paths.getPath('images/$path.png', IMAGE);
 
-		if (#if MODS_ALLOWED !FileSystem.exists(Paths.modsImages(path)) && #end!OpenFlAssets.exists(gamePath, IMAGE))
+		if (!Paths.fileExists('images/' + path + '.png', IMAGE))
 			path = 'healthBar';
 
-		var xmlPath:String = 'images/' + path + '.xml';
-		var modpath = '';
-		var isAnimated = false;
-		#if MODS_ALLOWED
-		modpath = Paths.modFolders(xmlPath);
-		if (!FileSystem.exists(path))
-			modpath = Paths.getPreloadPath(xmlPath);
-		if (FileSystem.exists(modpath))
-			isAnimated = true;
-		#else
-		modpath = Paths.getPreloadPath(xmlPath);
-		if (Assets.exists(modpath))
-			isAnimated = true;
-		#end
-
-		if (isAnimated)
+		if (Paths.fileExists('images/' + path + '.xml', TEXT))
 		{
 			healthBarBG.frames = Paths.getSparrowAtlas(path);
 			healthBarBG.animation.addByPrefix('idle', 'healthBar', 24, true);
@@ -1457,27 +1441,11 @@ class PlayState extends MusicBeatState
 	public function reloadTimeBarGraphic(?prefix:String = '', ?suffix:String = '', ?offsetX:Float = 0, ?offsetY:Float = 0)
 	{
 		var path:String = prefix + 'timeBar' + suffix;
-		var gamePath:String = Paths.getPath('images/$path.png', IMAGE);
 
-		if (#if MODS_ALLOWED !FileSystem.exists(Paths.modsImages(path)) && #end!OpenFlAssets.exists(gamePath, IMAGE))
+		if (!Paths.fileExists('images/' + path + '.png', IMAGE))
 			path = 'timeBar';
 
-		var xmlPath:String = 'images/' + path + '.xml';
-		var modpath = '';
-		var isAnimated = false;
-		#if MODS_ALLOWED
-		modpath = Paths.modFolders(xmlPath);
-		if (!FileSystem.exists(path))
-			modpath = Paths.getPreloadPath(xmlPath);
-		if (FileSystem.exists(modpath))
-			isAnimated = true;
-		#else
-		modpath = Paths.getPreloadPath(xmlPath);
-		if (Assets.exists(modpath))
-			isAnimated = true;
-		#end
-
-		if (isAnimated)
+		if (Paths.fileExists('images/' + path + '.xml', TEXT))
 		{
 			timeBarBG.frames = Paths.getSparrowAtlas(path);
 			timeBarBG.animation.addByPrefix('idle', 'timeBar', 24, true);
