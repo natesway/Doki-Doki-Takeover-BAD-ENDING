@@ -656,7 +656,7 @@ class Controls extends FlxActionSet
 		var copyKeys:Array<FlxKey> = keys.copy();
 		for (i in 0...copyKeys.length)
 		{
-			if (i == NONE)
+			if (i == FlxKey.NONE)
 				copyKeys.remove(i);
 		}
 
@@ -676,7 +676,7 @@ class Controls extends FlxActionSet
 		var copyKeys:Array<FlxKey> = keys.copy();
 		for (i in 0...copyKeys.length)
 		{
-			if (i == NONE)
+			if (i == FlxKey.NONE)
 				copyKeys.remove(i);
 		}
 
@@ -690,7 +690,7 @@ class Controls extends FlxActionSet
 	inline static function addKeys(action:FlxActionDigital, keys:Array<FlxKey>, state:FlxInputState)
 	{
 		for (key in keys)
-			if (key != NONE)
+			if (key != FlxKey.NONE)
 				action.addKey(key, state);
 	}
 

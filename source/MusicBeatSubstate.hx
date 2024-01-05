@@ -71,11 +71,11 @@ class MusicBeatSubstate extends FlxSubState
 		if (hitbox != null)
 			removeHitbox();
 
-		hitbox = new FlxHitbox(ammo, Std.int(FlxG.width / 4), FlxG.height, [0x876DB0, 0x488DB0, 0x5F9C4C, 0x946B99]);
+		hitbox = new FlxHitbox(4, Std.int(FlxG.width / 4), FlxG.height, [0x876DB0, 0x488DB0, 0x5F9C4C, 0x946B99]);
 		hitbox.visible = visible;
 		add(hitbox);
 
-		controls.setHitbox(hitbox, PlayState.SONG.mania);
+		controls.setHitbox(hitbox);
 		trackedInputsHitbox = controls.trackedInputs;
 		controls.trackedInputs = [];
 	}
