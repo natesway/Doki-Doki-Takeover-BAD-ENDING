@@ -351,6 +351,10 @@ class MainMenuState extends MusicBeatState
 				#end
 				MusicBeatState.switchState(new options.OptionsState());
 			case 'exit':
+				#if mobile
+				removeVPad();
+				#end
+
 				openSubState(new CloseGameSubState());
 		}
 	}
