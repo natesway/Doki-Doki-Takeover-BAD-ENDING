@@ -116,26 +116,25 @@ class MusicBeatSubstate extends FlxSubState
 	}
 
 	override function destroy():Void
-		{
-					#if mobile
-							if (trackedInputsHitbox.length > 0)
-										controls.removeVControlsInput(trackedInputsHitbox);
+	{
+		#if mobile
+		if (trackedInputsHitbox.length > 0)
+			controls.removeVControlsInput(trackedInputsHitbox);
 
-												if (trackedInputsVirtualPad.length > 0)
-															controls.removeVControlsInput(trackedInputsVirtualPad);
-																	#end
+		if (trackedInputsVirtualPad.length > 0)
+			controls.removeVControlsInput(trackedInputsVirtualPad);
+		#end
 
-																			super.destroy();
+		super.destroy();
 
-																					#if mobile
-																							if (vPad != null)
-																										vPad = FlxDestroyUtil.destroy(vPad);
+		#if mobile
+		if (vPad != null)
+			vPad = FlxDestroyUtil.destroy(vPad);
 
-																												if (hitbox != null)
-																															hitbox = FlxDestroyUtil.destroy(hitbox);
-																																	#end
-		}
-		}
+		if (hitbox != null)
+			hitbox = FlxDestroyUtil.destroy(hitbox);
+		#end
+	}
 
 	private function updateCurStep():Void
 	{
