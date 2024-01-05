@@ -122,20 +122,6 @@ class MusicBeatState extends FlxUIState
 		FlxTransitionableState.skipNextTransOut = false;
 	}
 
-	#if (VIDEOS_ALLOWED && windows)
-	override public function onFocus():Void
-	{
-		FlxVideo.onFocus();
-		super.onFocus();
-	}
-
-	override public function onFocusLost():Void
-	{
-		FlxVideo.onFocusLost();
-		super.onFocusLost();
-	}
-	#end
-
 	override function update(elapsed:Float)
 	{
 		// everyStep();
@@ -149,6 +135,28 @@ class MusicBeatState extends FlxUIState
 
 		super.update(elapsed);
 	}
+
+	override function destroy():Void
+		{
+					#if mobile
+							if (trackedInputsHitbox.length > 0)
+										controls.removeVControlsInput(trackedInputsHitbox);
+
+												if (trackedInputsVirtualPad.length > 0)
+															controls.removeVControlsInput(trackedInputsVirtualPad);
+																	#end
+
+																			super.destroy();
+
+																					#if mobile
+																							if (vPad != null)
+																										vPad = FlxDestroyUtil.destroy(vPad);
+
+																												if (hitbox != null)
+																															hitbox = FlxDestroyUtil.destroy(hitbox);
+																																	#end
+		}
+		}
 
 	private function updateBeat():Void
 	{

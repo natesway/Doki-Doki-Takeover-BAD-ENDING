@@ -115,6 +115,28 @@ class MusicBeatSubstate extends FlxSubState
 		super.update(elapsed);
 	}
 
+	override function destroy():Void
+		{
+					#if mobile
+							if (trackedInputsHitbox.length > 0)
+										controls.removeVControlsInput(trackedInputsHitbox);
+
+												if (trackedInputsVirtualPad.length > 0)
+															controls.removeVControlsInput(trackedInputsVirtualPad);
+																	#end
+
+																			super.destroy();
+
+																					#if mobile
+																							if (vPad != null)
+																										vPad = FlxDestroyUtil.destroy(vPad);
+
+																												if (hitbox != null)
+																															hitbox = FlxDestroyUtil.destroy(hitbox);
+																																	#end
+		}
+		}
+
 	private function updateCurStep():Void
 	{
 		var lastChange:BPMChangeEvent = {
