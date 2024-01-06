@@ -18,6 +18,10 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import flixel.FlxCamera;
+#if (target.threaded)
+import sys.thread.Thread;
+import sys.thread.Mutex;
+#end
 
 class PauseSubState extends MusicBeatSubstate
 {
@@ -62,11 +66,28 @@ class PauseSubState extends MusicBeatSubstate
 		}
 		difficultyChoices.push('BACK');
 
+		#if (target.threaded)
+		var mutex:Mutex = new Mutex();
+
+		Thread.create(function()
+		{
+			mutex.acquire();
+
+			pauseMusic = new FlxSound().loadEmbedded(Paths.music('ghost'), true, true);
+			pauseMusic.volume = 0;
+			pauseMusic.play();
+
+			FlxG.sound.list.add(pauseMusic);
+
+			mutex.release();
+		});
+		#else
 		pauseMusic = new FlxSound().loadEmbedded(Paths.music('ghost'), true, true);
 		pauseMusic.volume = 0;
 		pauseMusic.play();
 
 		FlxG.sound.list.add(pauseMusic);
+		#end
 
 		bg = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		bg.alpha = 0;
@@ -174,13 +195,21 @@ class PauseSubState extends MusicBeatSubstate
 
 		changeSelection();
 
+		#if mobile
+		addVPad(UP_DOWN, A);
+
+		vPad.y -= 40;
+
+		addVPadCamera();
+		#end
+
 		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
 	}
 
 	override function update(elapsed:Float)
 	{
-		if (pauseMusic.volume < 0.5)
-			pauseMusic.volume += 0.01 * elapsed;
+		if (pauseMusic?.volume < 0.5)
+			pauseMusic?.volume += 0.01 * elapsed;
 
 		super.update(elapsed);
 
@@ -277,7 +306,8 @@ class PauseSubState extends MusicBeatSubstate
 
 	override function destroy()
 	{
-		pauseMusic.destroy();
+		pauseMusic?.destroy();
+
 		super.destroy();
 	}
 
