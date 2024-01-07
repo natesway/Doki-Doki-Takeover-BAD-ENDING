@@ -56,6 +56,9 @@ class MainMenuState extends MusicBeatState
 
 	override function create()
 	{
+		Paths.clearStoredMemory();
+		Paths.clearUnusedMemory();
+
 		if (!ClientPrefs.storycomplete)
 		{
 			#if !debug
