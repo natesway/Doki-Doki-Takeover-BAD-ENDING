@@ -112,10 +112,10 @@ class TitleState extends MusicBeatState
 
 		titleJSON = Json.parse(Paths.getTextFromFile("images/gfDanceTitle.json"));
 
-		FlxG.game.focusLostFramerate = 60;
 		FlxG.sound.muteKeys = muteKeys;
 		FlxG.sound.volumeDownKeys = volumeDownKeys;
 		FlxG.sound.volumeUpKeys = volumeUpKeys;
+
 		FlxG.keys.preventDefaultKeys = [TAB];
 
 		PlayerSettings.init();

@@ -235,6 +235,7 @@ class ClientPrefs
 		{
 			FlxG.updateFramerate = framerate;
 			FlxG.drawFramerate = framerate;
+			FlxG.game.focusLostFramerate = framerate;
 		}
 		if (FlxG.save.data.fullscreen != null)
 		{
