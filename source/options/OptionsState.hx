@@ -45,6 +45,11 @@ class OptionsState extends MusicBeatState
 
 	function openSelectedSubstate(label:String)
 	{
+		#if mobile
+		if (label != 'Adjust Delay and Combo')
+			removeVPad();
+		#end
+		
 		switch (label)
 		{
 			case 'Note Colors':
@@ -100,11 +105,17 @@ class OptionsState extends MusicBeatState
 
 		selectorLeft = new Alphabet(0, 0, '>', true, false);
 		add(selectorLeft);
+
 		selectorRight = new Alphabet(0, 0, '<', true, false);
 		add(selectorRight);
 
 		changeSelection();
+
 		ClientPrefs.saveSettings();
+
+		#if mobile
+		addVPad(UP_DOWN, A_B);
+		#end
 
 		super.create();
 	}
