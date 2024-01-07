@@ -74,6 +74,7 @@ class FreeplayState extends MusicBeatState
 		Paths.clearUnusedMemory();
 
 		PlayState.isStoryMode = false;
+
 		WeekData.reloadWeekFiles(false);
 
 		#if DISCORD_ALLOWED
@@ -300,6 +301,10 @@ class FreeplayState extends MusicBeatState
 
 		if (ctrl)
 		{
+			#if mobile
+			removeVPad();
+			#end
+
 			openSubState(new GameplayChangersSubstate());
 		}
 		else if (space)
@@ -363,6 +368,9 @@ class FreeplayState extends MusicBeatState
 		}
 		else if (controls.RESET #if mobile || vPad.buttonY.justPressed #end)
 		{
+			#if mobile
+			removeVPad();
+			#end
 			openSubState(new ResetScoreSubState(songs[curSelected].songName, curDifficulty, songs[curSelected].songCharacter));
 			FlxG.sound.play(Paths.sound('scrollMenu'));
 		}
