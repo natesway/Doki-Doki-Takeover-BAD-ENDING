@@ -161,6 +161,15 @@ class GameplayChangersSubstate extends MusicBeatSubstate
 
 		changeSelection();
 		reloadCheckboxes();
+
+		#if mobile
+		addVPad(LEFT_FULL, A_B_C);
+
+		if (FlxG.state is MainMenuState)
+			vPad.y -= 44;
+		else if (FlxG.state is FreeplayState)
+			vPad.y -= 26;
+		#end
 	}
 
 	var nextAccept:Int = 5;
@@ -320,7 +329,7 @@ class GameplayChangersSubstate extends MusicBeatSubstate
 				}
 			}
 
-			if (controls.RESET)
+			if (controls.RESET #if mobile || vPad.buttonC.justPressed #end)
 			{
 				for (i in 0...optionsArray.length)
 				{
