@@ -106,6 +106,10 @@ class ControlsSubState extends MusicBeatSubstate
 			}
 		}
 		changeSelection();
+
+		#if mobile
+		addVPad(LEFT_FULL, A_B);
+		#end
 	}
 
 	var leaving:Bool = false;
@@ -132,11 +136,11 @@ class ControlsSubState extends MusicBeatSubstate
 			{
 				ClientPrefs.reloadControls();
 				#if mobile
-			FlxTransitionableState.skipNextTransOut = true;
-			FlxG.resetState();
-			#else
-			close();
-			#end
+				FlxTransitionableState.skipNextTransOut = true;
+				FlxG.resetState();
+				#else
+				close();
+				#end
 				FlxG.sound.play(Paths.sound('cancelMenu'));
 			}
 
