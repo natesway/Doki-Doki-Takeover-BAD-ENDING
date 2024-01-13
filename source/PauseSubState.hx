@@ -208,8 +208,8 @@ class PauseSubState extends MusicBeatSubstate
 
 	override function update(elapsed:Float)
 	{
-		if (pauseMusic?.volume < 0.5)
-			pauseMusic?.volume += 0.01 * elapsed;
+		if (pauseMusic != null && pauseMusic.volume < 0.5)
+			pauseMusic.volume += 0.01 * elapsed;
 
 		super.update(elapsed);
 
@@ -306,7 +306,8 @@ class PauseSubState extends MusicBeatSubstate
 
 	override function destroy()
 	{
-		pauseMusic?.destroy();
+		if (pauseMusic != null)
+			pauseMusic.destroy();
 
 		super.destroy();
 	}
